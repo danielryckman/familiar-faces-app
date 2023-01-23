@@ -1,6 +1,5 @@
 package com.example.proposal;
 
-import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +15,7 @@ import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 import retrofit2.http.Url;
 
-public interface JsonPlaceHolderApi {
-    @POST("sdapi/v1/txt2img")
-    Call<Post> createPost(@Body Post post);
+public interface GetImage {
+    @GET("api/todo/tasks")
+    Call<ApiPost[]> getImage();
 }
