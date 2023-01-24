@@ -1,29 +1,7 @@
 package com.example.proposal;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import com.example.proposal.ImageGenerationActivity;
-import android.media.Image;
-import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
-import android.widget.EditText;
-import android.widget.ImageView;
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.InvalidMarkException;
-import java.util.UUID;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,28 +13,28 @@ public class ServerRequest implements ServerApi, UserApi{
     private ServerApi serverApi;
     private UserApi userApi;
     private JsonPlaceHolderApi jsonPlaceHolderApi;
-    public Call<ApiPost> createPostTask(ApiPost apiPost){
+    public Call<TaskPOJO> createPostTask(TaskPOJO apiPost){
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://192.168.4.214:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         serverApi = retrofit.create(ServerApi.class);
-        Call<ApiPost> call = serverApi.createPostTask(apiPost);
-        call.enqueue(new Callback<ApiPost>() {
+        Call<TaskPOJO> call = serverApi.createPostTask(apiPost);
+        call.enqueue(new Callback<TaskPOJO>() {
             @Override
-            public void onResponse(Call<ApiPost> call, Response<ApiPost> response) {
+            public void onResponse(Call<TaskPOJO> call, Response<TaskPOJO> response) {
                 if (!response.isSuccessful()) {
                     Log.i("responsecode", "i failed");
                     return;
                 }
-                ApiPost postResponse = response.body();
+                TaskPOJO postResponse = response.body();
                 String content = "";
                 content += postResponse.getImage();
                 byte[] decodedBytes = android.util.Base64.decode(content, Base64.DEFAULT);
                 //ImageGenerationActivity.viewImage(decodedBytes);
             }
             @Override
-            public void onFailure(Call<ApiPost> call, Throwable t) {
+            public void onFailure(Call<TaskPOJO> call, Throwable t) {
                 Log.i("Failure", "failed to reach api");
             }
         });

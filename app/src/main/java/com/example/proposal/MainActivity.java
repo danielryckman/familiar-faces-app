@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         String user = username.getText().toString();
 
         if (user.equals("ShirleyF")) {
-            Intent intent = new Intent(this, ImageGenerationActivity.class);
+            Intent intent = new Intent(this, LandingActivity.class);
             username.getText().clear();
             password.getText().clear();
             startActivity(intent);

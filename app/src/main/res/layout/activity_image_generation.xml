@@ -5,10 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ImageGenerationActivity">
-    <androidx.constraintlayout.motion.widget.MotionLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layoutDescription="@xml/my_layout_scene">
     <ImageView
         android:id="@+id/image_view_result"
         android:layout_width="360dp"
