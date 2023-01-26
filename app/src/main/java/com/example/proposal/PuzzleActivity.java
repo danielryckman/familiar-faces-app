@@ -151,22 +151,31 @@ public class PuzzleActivity extends AppCompatActivity implements OnNewTestListen
         if(etText.getText().length()<1 || testPOJO.getQuestion() == null){
             return;
         }
+        if(command.toLowerCase().contains("back")){
+            intent = new Intent(this, LandingActivity.class);
+            startActivity(intent);
+            return;
+        }else if(command.toLowerCase().contains("photo")){
+            intent = new Intent(this, ImageGenerationActivity.class);
+            startActivity(intent);
+            return;
+        }
         if(qid>testPOJO.getQuestion().size()-1){
             int result = checkSolution(-1);
             if(result==1) {
                 testPOJO.getQuestion().get(mid).setScore("1");
-                etText.setText("");
                 testPOJO.setScore(testPOJO.getScore() + 1);
-                return;
             }else if(retry <5 ){
                 retry ++;
                 return;
             }
+            etText.setText("");
+            textView.setText("Thanks for playing the puzzle. What do you want to do next? \"go back\" or see \"photo\"?");
+            return;
         }
         int result = checkSolution(qid);
         if(result==1){
             textView.append("\n Excellent Job!!");
-            etText.setText("");
             testPOJO.getQuestion().get(qid).setScore("1");
             testPOJO.setScore(testPOJO.getScore() +1);
             try {
@@ -186,8 +195,6 @@ public class PuzzleActivity extends AppCompatActivity implements OnNewTestListen
         }else if(qid<testPOJO.getQuestion().size() +1) {
             etText.setText("");
             displayMemoryQuestion();
-        }else{
-            intent = new Intent(this, LandingActivity.class);
         }
     }
 
@@ -198,6 +205,8 @@ public class PuzzleActivity extends AppCompatActivity implements OnNewTestListen
             button2.setBackgroundColor(Color.GREEN);
         }else if(qid==2){
             button3.setBackgroundColor(Color.GREEN);
+        }else if(qid==3){
+            button4.setBackgroundColor(Color.GREEN);
         }
     }
     private void setButtonColorRed(int qid){
@@ -207,6 +216,8 @@ public class PuzzleActivity extends AppCompatActivity implements OnNewTestListen
             button2.setBackgroundColor(Color.RED);
         }else if(qid==2){
             button3.setBackgroundColor(Color.RED);
+        }else if(qid==4){
+            button4.setBackgroundColor(Color.RED);
         }
     }
 
@@ -215,28 +226,32 @@ public class PuzzleActivity extends AppCompatActivity implements OnNewTestListen
             int correctCount =0;
             for(String key: memoryTestSolution) {
                 String response = String.valueOf(etText.getText());
-                if (response.contains(key)){
+                if (response.toLowerCase().contains(key)){
                     correctCount++;
                 }
             }
             if(correctCount ==3){
-                button4.setTextColor(Color.GREEN);
+                setButtonColorGreen(mid);
                 return 1;
             }else{
+                setButtonColorRed(mid);
                 return -1;
             }
         }
         QuestionPOJO question = testPOJO.getQuestion().get(qid);
         if(question.getCategory().equals("memory")){
+            mid=qid;
             return 0;
         }else if(question.getCategory().equals("relationship") ||question.getCategory().equals("money")){
             String solution = question.getSolution();
             String[] keys = solution.split(",");
             for(String key: keys) {
-                if (String.valueOf(etText.getText()).contains(key)){
+                if (String.valueOf(etText.getText()).toLowerCase().contains(key)){
+                    setButtonColorGreen(qid);
                     return 1;
                 }
             }
+            setButtonColorRed(qid);
             return -1;
         }else if(question.getCategory().equals("general")){
             String description = question.getDescription();
@@ -258,7 +273,7 @@ public class PuzzleActivity extends AppCompatActivity implements OnNewTestListen
                 setButtonColorRed(qid);
                 return -1;
             }else{
-                if(String.valueOf(etText.getText()).contains("2023")){
+                if(String.valueOf(etText.getText()).toLowerCase().contains("2023")){
                     setButtonColorGreen(qid);
                     return 1;
                 }

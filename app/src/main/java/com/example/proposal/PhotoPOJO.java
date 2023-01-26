@@ -19,6 +19,11 @@ public class PhotoPOJO {
 
     private String description;
 
+    private String title;
+
+    private String personinpic;
+
+
     private long datetoshow;
 
     private long datecreated;
@@ -28,6 +33,114 @@ public class PhotoPOJO {
     }
 
     private long datelastviewed;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setPersoninpic(String personinpic) {
+        this.personinpic = personinpic;
+    }
+
+    public void setDatetoshow(long datetoshow) {
+        this.datetoshow = datetoshow;
+    }
+
+    public void setDatecreated(long datecreated) {
+        this.datecreated = datecreated;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public void setPtype(String ptype) {
+        this.ptype = ptype;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public void setMyuser(UserPOJO myuser) {
+        this.myuser = myuser;
+    }
+
+    public void setFamilymember(FamilymemberPOJO familymember) {
+        this.familymember = familymember;
+    }
+
+    public void setHobbies(String hobbies) {
+        this.hobbies = hobbies;
+    }
+
+    public void setTask(TaskPOJO task) {
+        this.task = task;
+    }
+
+    public void setMyrecord(RecordPOJO myrecord) {
+        this.myrecord = myrecord;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getPersoninpic() {
+        return personinpic;
+    }
+
+    public long getDatetoshow() {
+        return datetoshow;
+    }
+
+    public long getDatecreated() {
+        return datecreated;
+    }
+
+    public long getDatelastviewed() {
+        return datelastviewed;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public UserPOJO getMyuser() {
+        return myuser;
+    }
+
+    public FamilymemberPOJO getFamilymember() {
+        return familymember;
+    }
+
+    public String getHobbies() {
+        return hobbies;
+    }
+
+    public TaskPOJO getTask() {
+        return task;
+    }
+
+    public RecordPOJO getMyrecord() {
+        return myrecord;
+    }
 
     private String comment;
 

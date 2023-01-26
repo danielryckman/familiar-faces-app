@@ -5,29 +5,43 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ImageGenerationActivity">
-    <ViewFlipper
-        android:id="@+id/imageFrames"
+    <FrameLayout
+        android:id="@+id/framelayout"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        >
-    </ViewFlipper>
+        android:layout_height="match_parent"
+        tools:layout_constraintTop_toBottomOf="@+id/descriptionText">
+        <ViewFlipper
+            android:id="@+id/imageFrames"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            tools:layout_constraintBottom_toBottomOf="parent"
+            tools:layout_constraintTop_toTopOf="parent"
+            tools:layout_constraintStart_toStartOf="parent"
+            tools:layout_constraintEnd_toEndOf="parent">
+        </ViewFlipper>
+        <TextView
+            android:id="@+id/annotation"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:textSize="18dp"
+            android:gravity="center"
+            tools:layout_constraintBottom_toTopOf="@+id/imageFrames"/>
+
+
+    </FrameLayout>
     <RelativeLayout
         android:id="@+id/slideShowBtn"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
-        android:gravity="center"
+        android:layout_height="400dp"
+        app:layout_constraintTop_toTopOf="@+id/framelayout"
+        android:gravity="top"
         android:visibility="invisible">
 
-        <RelativeLayout
+       <!-- <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#33FFFFFF"
@@ -40,28 +54,43 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#66000000"
-                android:gravity="center" >
+                android:gravity="center" >-->
 
-                <TextView
+               <!-- <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:text="Slideshow"
-                    android:textSize="18dp" />
+                    android:textSize="28dp" />-->
             </RelativeLayout>
-        </RelativeLayout>
-    </RelativeLayout>
+       <!-- </RelativeLayout>
+    </RelativeLayout>-->
     <TextView
         android:id="@+id/descriptionText"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="6"
-        android:gravity="center"
-        android:textSize="12sp"
+        android:gravity="top"
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@+id/slideShowBtn"
+        tools:ignore="MissingConstraints" />
+    <EditText
+        android:id="@+id/photoetSpeech"
+        android:layout_width="350dp"
+        android:layout_height="150dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="29dp"
+        android:layout_marginEnd="31dp"
+        android:background="@drawable/et_bg"
+        android:ems="10"
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
+        android:maxLines="10"
+        android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="MissingConstraints" />
-
+        app:layout_constraintTop_toBottomOf="@+id/descriptionText"
+        tools:ignore="SpeakableTextPresentCheck" />
     <ImageView
         android:id="@+id/ivSpeak"
         android:layout_width="100dp"
@@ -72,7 +101,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageFrames"
+        app:layout_constraintTop_toBottomOf="@+id/photoetSpeech"
         app:srcCompat="@drawable/ic_mic"
         tools:ignore="SpeakableTextPresentCheck" />
 

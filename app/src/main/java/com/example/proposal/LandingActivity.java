@@ -113,11 +113,16 @@ public class LandingActivity extends AppCompatActivity implements AdapterView.On
 
     public void textChanged(){
         String command = String.valueOf(etText.getText());
+        if(command.trim().isEmpty()){
+            return;
+        }
         Intent intent;
         if(command.contains("photo")){
+            etText.setText("");
             intent = new Intent(this, ImageGenerationActivity.class);
             startActivity(intent);
         }else if(command.contains("puzzle")){
+            etText.setText("");
             intent = new Intent(this, PuzzleActivity.class);
             startActivity(intent);
         }
