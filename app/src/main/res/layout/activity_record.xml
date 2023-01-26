@@ -8,38 +8,55 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/recordtextView"
+        android:id="@+id/nametextView"
         android:layout_width="350dp"
-        android:layout_height="150dp"
-        android:layout_marginTop="20dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="15dp"
         android:text="test graph"
         android:textSize="32sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/recordtextView"/>
+
+    <TextView
+        android:id="@+id/recordtextView"
+        android:layout_width="350dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="15dp"
+        android:text="test graph"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nametextView"
+        app:layout_constraintBottom_toTopOf="@+id/graph"/>
 
     <com.jjoe64.graphview.GraphView
         android:layout_width="match_parent"
         android:layout_height="200dip"
         android:id="@+id/graph"
-        app:layout_constraintTop_toBottomOf="@+id/recordtextView"/>
+        app:layout_constraintTop_toBottomOf="@+id/recordtextView"
+        app:layout_constraintBottom_toTopOf="@+id/recordtextView2"/>
 
-    <EditText
-        android:id="@+id/recordetSpeech"
+    <TextView
+        android:id="@+id/recordtextView2"
         android:layout_width="350dp"
-        android:layout_height="150dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="29dp"
-        android:layout_marginEnd="31dp"
-        android:background="@drawable/et_bg"
-        android:ems="10"
-        android:gravity="start|top"
-        android:inputType="textMultiLine"
-        android:maxLines="10"
-        android:padding="10dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="18dp"
+        android:text="test graph"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/graph"
-        tools:ignore="SpeakableTextPresentCheck" />
+        app:layout_constraintBottom_toTopOf="@+id/graph2"/>
+
+    <com.jjoe64.graphview.GraphView
+        android:layout_width="match_parent"
+        android:layout_height="200dip"
+        android:id="@+id/graph2"
+        app:layout_constraintTop_toBottomOf="@+id/recordtextView2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

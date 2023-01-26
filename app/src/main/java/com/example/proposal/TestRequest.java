@@ -39,7 +39,7 @@ public class TestRequest implements NewTest{
                     return;
                 }
                 TestPOJO postResponse = response.body();
-                //onNewTestListener.onNewTest(postResponse);
+                onNewTestListener.onNewTest(postResponse);
 
             }
             @Override

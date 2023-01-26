@@ -10,10 +10,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.speech.RecognizerIntent;
+import android.text.SpannableString;
+import android.text.style.BackgroundColorSpan;
 import android.util.Base64;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -43,6 +46,10 @@ public class ImageGenerationActivity extends AppCompatActivity implements GetIma
     private JsonPlaceHolderApi jsonPlaceHolderApi;
     private GetImage getimage;
     private TextView descriptionText;
+
+    private TextView annotationView;
+
+    private EditText etText;
     private ImageView ivMic;
     private float x1,x2;
     int l;
@@ -52,15 +59,22 @@ public class ImageGenerationActivity extends AppCompatActivity implements GetIma
     RelativeLayout slideShowBtn;
     Handler handler;
     Runnable runnable;
-    List<String> descriptions = new ArrayList<>();
+    List<String> titles = new ArrayList<>();
+
+    List<String> annotations = new ArrayList<>();
+
+    boolean firstLaunch = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_generation);
         descriptionText = findViewById(R.id.descriptionText);
+        annotationView =findViewById(R.id.annotation);
+        etText = findViewById(R.id.photoetSpeech);
         //imageViewResult = findViewById(R.id.image_view_result);
         ivMic = findViewById(R.id.ivSpeak);
         Log.i("view", "finished");
+        etText.setText("Press the microphone image to leave a comment.");
         getImage();
         ivMic.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,8 +86,14 @@ public class ImageGenerationActivity extends AppCompatActivity implements GetIma
                 intent.putExtra(RecognizerIntent.EXTRA_PROMPT,"Speak now!");
                 // starting intent for result
                 activityResultLauncher.launch(intent);
+                if(firstLaunch){
+                    etText.setText("");
+                    firstLaunch=false;
+                }
             }
         });
+
+
         imageFrame = (ViewFlipper) findViewById(R.id.imageFrames);
         // Gesture detection
         handler = new Handler();
@@ -106,11 +126,15 @@ public class ImageGenerationActivity extends AppCompatActivity implements GetIma
                         // get data and append it to editText
                         ArrayList<String> d=result.getData().getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                         String responseComment = d.get(0);
-                        //etText.setText(etText.getText()+" "+d.get(0));
+                        etText.setText(etText.getText()+" "+d.get(0));
+                        textChanged();
                     }
                 }
             });
 
+    public void textChanged() {
+    //save the comment for the photo object and invoke the rest service to update
+    }
     public Call<PhotoPOJO[]> getImage() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://192.168.4.214:8080/")
@@ -128,11 +152,16 @@ public class ImageGenerationActivity extends AppCompatActivity implements GetIma
                 PhotoPOJO[] postResponse = response.body();
                 int k;
                 for (k=0; k < postResponse.length; k++) {
-                    descriptions.add(postResponse[k].getDescription());
+                    titles.add(postResponse[k].getTitle());
+                    annotations.add(postResponse[k].getPersoninpic());
                 }
                 l = postResponse.length;
-                String imageDescription = postResponse[0].getDescription();
+                String imageDescription = postResponse[0].getTitle();
                 descriptionText.setText(imageDescription);
+                //SpannableString str=new SpannableString("hello");
+                //str.setSpan(new BackgroundColorSpan(Color.WHITE), 0, str.length(), 0);
+                //annotationView.setText(str);
+                //annotationView.setBackgroundColor(Color.WHITE);
                 addFlipperImages(imageFrame, postResponse);
                 Log.i("viewnum", "called");
             }
@@ -152,7 +181,6 @@ public class ImageGenerationActivity extends AppCompatActivity implements GetIma
         String c = String.valueOf(b);
         Log.i("numimage", c);
         for (int count = 0; count < imageCount; count++) {
-            Log.i("description", array[count].getDescription());
             ImageView imageView = new ImageView(this);
             String image = array[count].getImage();
             byte[] decodedBytes = android.util.Base64.decode(image, Base64.DEFAULT);
@@ -163,6 +191,18 @@ public class ImageGenerationActivity extends AppCompatActivity implements GetIma
             imageView.setLayoutParams(params);
             flipper.addView(imageView);
         }
+    }
+
+    private void setImageAnnotation(String annotation){
+        if(annotation ==null || annotation.isEmpty()) {
+            annotationView.setText("");
+            return;
+        }
+        SpannableString str=new SpannableString(annotation);
+        str.setSpan(new BackgroundColorSpan(Color.WHITE), 0, annotation.length(), 0);
+        annotationView.setText(annotation);
+        annotationView.setTextColor(Color.WHITE);
+        etText.setText("");
     }
     @Override
     public boolean onTouchEvent(MotionEvent event)
@@ -185,12 +225,14 @@ public class ImageGenerationActivity extends AppCompatActivity implements GetIma
                         imageFrame.setOutAnimation(this, R.anim.slide_out_left);
                         imageFrame.showPrevious();
                         if (i == 0){
-                            descriptionText.setText(descriptions.get(l-1));
+                            descriptionText.setText(titles.get(l-1));
+                            setImageAnnotation(annotations.get(l-1));
                             i = l-1;
                         }
                         else {
-                            descriptionText.setText(descriptions.get(i-1));
-                            Log.i("setting", descriptions.get(i-1));
+                            descriptionText.setText(titles.get(i-1));
+                            setImageAnnotation(annotations.get(l-1));
+                            //Log.i("setting", titles.get(i-1));
                             i = i-1;
                         }
                         //Toast.makeText(this, "Left to Right swipe [Previous]", Toast.LENGTH_SHORT).show ();
@@ -203,11 +245,13 @@ public class ImageGenerationActivity extends AppCompatActivity implements GetIma
                         imageFrame.setInAnimation(this, android.R.anim.slide_out_right);
                         imageFrame.showNext();
                         if (i+1 == l){
-                            descriptionText.setText(descriptions.get(0));
+                            descriptionText.setText(titles.get(0));
+                            setImageAnnotation(annotations.get(0));
                             i = 0;
                         }
                         else {
-                            descriptionText.setText(descriptions.get(i+1));
+                            descriptionText.setText(titles.get(i+1));
+                            setImageAnnotation(annotations.get(i+1));
                             i = i+1;
                         }
                         //Toast.makeText(this, "Right to Left swipe [Next]", Toast.LENGTH_SHORT).show ();
