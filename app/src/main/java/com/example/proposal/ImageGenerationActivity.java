@@ -7,7 +7,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -25,10 +24,6 @@ import android.view.animation.TranslateAnimation;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import java.io.IOException;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,9 +37,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 public class ImageGenerationActivity extends AppCompatActivity implements GetImage {
     private ImageView imageViewResult;
@@ -119,24 +111,25 @@ public class ImageGenerationActivity extends AppCompatActivity implements GetIma
                 }
             });
 
-    public Call<ApiPost[]> getImage() {
+    public Call<TaskPOJO[]> getImage() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://192.168.4.214:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         getimage = retrofit.create(GetImage.class);
-        Call<ApiPost[]> call = getimage.getImage();
-        call.enqueue(new Callback<ApiPost[]>() {
+        Call<TaskPOJO[]> call = getimage.getImage();
+        call.enqueue(new Callback<TaskPOJO[]>() {
             @Override
-            public void onResponse(Call<ApiPost[]> call, Response<ApiPost[]> response) {
+            public void onResponse(Call<TaskPOJO[]> call, Response<TaskPOJO[]> response) {
                 if (!response.isSuccessful()) {
                     Log.i("responsecode", "i failed");
                     return;
                 }
-                ApiPost[] postResponse = response.body();
+                TaskPOJO[] postResponse = response.body();
                 int k;
-                for (k=0; k < postResponse.length; k++)
+                for (k=0; k < postResponse.length; k++) {
                     descriptions.add(postResponse[k].getDescription());
+                }
                 l = postResponse.length;
                 String imageDescription = postResponse[0].getDescription();
                 descriptionText.setText(imageDescription);
@@ -144,13 +137,13 @@ public class ImageGenerationActivity extends AppCompatActivity implements GetIma
                 Log.i("viewnum", "called");
             }
             @Override
-            public void onFailure(Call<ApiPost[]> call, Throwable t) {
+            public void onFailure(Call<TaskPOJO[]> call, Throwable t) {
                 Log.i("Failure", "failed to reach api" + t.getMessage());
             }
         });
         return call;
     }
-    private void addFlipperImages(ViewFlipper flipper, ApiPost[] array) {
+    private void addFlipperImages(ViewFlipper flipper, TaskPOJO[] array) {
         int imageCount = array.length;
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.MATCH_PARENT,

@@ -5,20 +5,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import java.io.IOException;
 import java.time.LocalTime;
 import java.util.Locale;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -73,7 +68,7 @@ public class EventEditActivity extends AppCompatActivity
         //long epochTime = CalendarUtils.epochTime(dateTime);
         Event newEvent = new Event(eventName, description, CalendarUtils.selectedDate,(long)hour*60+minute*60, 1);
         Event.eventsList.add(newEvent);
-        ApiPost apipost = new ApiPost(eventName, description, (long)hour*60+minute*60, 1);
+        TaskPOJO apipost = new TaskPOJO(eventName, description, (long)hour*60+minute*60, 1);
         try {
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl("http://192.168.4.171:7860/")

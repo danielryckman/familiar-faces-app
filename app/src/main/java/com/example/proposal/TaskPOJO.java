@@ -1,6 +1,6 @@
 package com.example.proposal;
 
-public class ApiPost {
+public class TaskPOJO {
 
     private long id;
 
@@ -20,7 +20,7 @@ public class ApiPost {
 
     private String image;
 
-    public ApiPost(String name, String description, long schedule, int repeat) {
+    public TaskPOJO(String name, String description, long schedule, int repeat) {
         this.name = name;
         this.description = description;
         this.schedule = schedule;
