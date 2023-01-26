@@ -12,7 +12,7 @@ import android.widget.ImageView;
 
 
 public class FamilyActivity extends AppCompatActivity {
-    private Button button;
+    private Button patientview;
     private Button settings;
     private Button adduser;
     @Override
@@ -21,21 +21,21 @@ public class FamilyActivity extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         setContentView(R.layout.activity_family);
-        button = (Button) findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
+        patientview = (Button) findViewById(R.id.patientview);
+        patientview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 openImageActivity();
             }
         });
-        settings = (Button) findViewById(R.id.button4);
+        settings = (Button) findViewById(R.id.createEvent);
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 openConfigActivity();
             }
         });
-        adduser = (Button) findViewById(R.id.button2);
+        adduser = (Button) findViewById(R.id.addFamilyMember);
         adduser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) { openAddUser(); }
