@@ -1,14 +1,17 @@
 package com.example.proposal;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,6 +22,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageButton;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -35,6 +39,9 @@ public class PuzzleActivity extends AppCompatActivity implements OnNewTestListen
     TextView textView;
     EditText etText;
     ImageView ivMic,ivCopy;
+
+    Button button1, button2, button3, button4;
+
     String lcode = "en-US";
 
     private TestPOJO testPOJO;
@@ -63,6 +70,7 @@ public class PuzzleActivity extends AppCompatActivity implements OnNewTestListen
     String[] lCodes = {"en-US","ta-IN","hi-IN","es-CL","fr-FR",
             "ar-SA","zh-TW","jp-JP","de-DE"};
 
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,7 +81,10 @@ public class PuzzleActivity extends AppCompatActivity implements OnNewTestListen
         etText = findViewById(R.id.testetSpeech);
         ivMic = findViewById(R.id.testivSpeak);
         ivCopy = findViewById(R.id.testivCopy);
-
+        button1 = (Button)findViewById(R.id.button1);
+        button2 = (Button)findViewById(R.id.button2);
+        button3 = (Button)findViewById(R.id.button3);
+        button4 = (Button)findViewById(R.id.button4);
         //create a new Test
         try {
             Retrofit retrofit = new Retrofit.Builder()
@@ -137,7 +148,7 @@ public class PuzzleActivity extends AppCompatActivity implements OnNewTestListen
     public void textChanged() {
         String command = String.valueOf(etText.getText());
         Intent intent;
-        if(etText.getText().length()<1){
+        if(etText.getText().length()<1 || testPOJO.getQuestion() == null){
             return;
         }
         if(qid>testPOJO.getQuestion().size()-1){
@@ -145,7 +156,8 @@ public class PuzzleActivity extends AppCompatActivity implements OnNewTestListen
             if(result==1) {
                 testPOJO.getQuestion().get(mid).setScore("1");
                 etText.setText("");
-                testPOJO.setScore(String.valueOf(Integer.parseInt(testPOJO.getScore()) + 1));
+                testPOJO.setScore(testPOJO.getScore() + 1);
+                return;
             }else if(retry <5 ){
                 retry ++;
                 return;
@@ -156,10 +168,7 @@ public class PuzzleActivity extends AppCompatActivity implements OnNewTestListen
             textView.append("\n Excellent Job!!");
             etText.setText("");
             testPOJO.getQuestion().get(qid).setScore("1");
-            if(testPOJO.getScore() == null){
-                testPOJO.setScore("0");
-            }
-            testPOJO.setScore(String.valueOf(Integer.parseInt(testPOJO.getScore()) +1));
+            testPOJO.setScore(testPOJO.getScore() +1);
             try {
                 Thread.sleep(1000);
             }catch(Exception ex) {
@@ -182,6 +191,25 @@ public class PuzzleActivity extends AppCompatActivity implements OnNewTestListen
         }
     }
 
+    private void setButtonColorGreen(int qid){
+        if(qid ==0){
+            button1.setBackgroundColor(Color.GREEN);
+        }else if(qid==1){
+            button2.setBackgroundColor(Color.GREEN);
+        }else if(qid==2){
+            button3.setBackgroundColor(Color.GREEN);
+        }
+    }
+    private void setButtonColorRed(int qid){
+        if(qid ==0){
+            button1.setBackgroundColor(Color.RED);
+        }else if(qid==1){
+            button2.setBackgroundColor(Color.RED);
+        }else if(qid==2){
+            button3.setBackgroundColor(Color.RED);
+        }
+    }
+
     private int checkSolution(int qid){
         if(qid == -1){
             int correctCount =0;
@@ -192,6 +220,7 @@ public class PuzzleActivity extends AppCompatActivity implements OnNewTestListen
                 }
             }
             if(correctCount ==3){
+                button4.setTextColor(Color.GREEN);
                 return 1;
             }else{
                 return -1;
@@ -215,19 +244,25 @@ public class PuzzleActivity extends AppCompatActivity implements OnNewTestListen
             if(description.contains("day of the week")){
                 DayOfWeek dayOfWeek =today.getDayOfWeek();
                 if(String.valueOf(etText.getText()).toLowerCase().contains(dayOfWeek.toString().toLowerCase())){
+                    setButtonColorGreen(qid);
                     return 1;
                 }
+                setButtonColorRed(qid);
                 return -1;
             }else if(description.contains("month of the year")){
                 Month month =today.getMonth();
                 if(String.valueOf(etText.getText()).toLowerCase().contains(month.toString().toLowerCase())){
+                    setButtonColorGreen(qid);
                     return 1;
                 }
+                setButtonColorRed(qid);
                 return -1;
             }else{
                 if(String.valueOf(etText.getText()).contains("2023")){
+                    setButtonColorGreen(qid);
                     return 1;
                 }
+                setButtonColorRed(qid);
                 return -1;
             }
         }else{

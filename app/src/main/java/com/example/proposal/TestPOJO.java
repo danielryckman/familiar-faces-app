@@ -20,7 +20,7 @@ public class TestPOJO {
         this.id = id;
     }
 
-    private String score;
+    private int score;
 
     private String subscores;
 
@@ -38,7 +38,7 @@ public class TestPOJO {
         this.endtime = endtime;
     }
 
-    public void setScore(String score) {
+    public void setScore(int score) {
         this.score = score;
     }
 
@@ -62,7 +62,7 @@ public class TestPOJO {
         return endtime;
     }
 
-    public String getScore() {
+    public int getScore() {
         return score;
     }
 
