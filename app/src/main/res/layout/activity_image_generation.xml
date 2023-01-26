@@ -5,39 +5,75 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ImageGenerationActivity">
-    <ImageView
-        android:id="@+id/image_view_result"
-        android:layout_width="360dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginBottom="133dp"
-        android:contentDescription="@null"
-        app:layout_constraintBottom_toTopOf="@+id/ivSpeak"
-        app:layout_constraintStart_toStartOf="parent"
+    <ViewFlipper
+        android:id="@+id/imageFrames"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        >
+    </ViewFlipper>
+    <RelativeLayout
+        android:id="@+id/slideShowBtn"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:visibility="invisible">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#33FFFFFF"
+            android:gravity="center"
+            android:paddingLeft="1dp"
+            android:paddingRight="1dp"
+            android:paddingTop="1dp" >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#66000000"
+                android:gravity="center" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="Slideshow"
+                    android:textSize="18dp" />
+            </RelativeLayout>
+        </RelativeLayout>
+    </RelativeLayout>
     <TextView
         android:id="@+id/descriptionText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="6"
         android:gravity="center"
-        android:textSize="48sp"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/image_view_result" />
+        tools:ignore="MissingConstraints" />
 
     <ImageView
         android:id="@+id/ivSpeak"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginBottom="50dp"
+        android:layout_marginTop="50dp"
         android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/descriptionText"
+        app:layout_constraintTop_toBottomOf="@+id/imageFrames"
         app:srcCompat="@drawable/ic_mic"
         tools:ignore="SpeakableTextPresentCheck" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

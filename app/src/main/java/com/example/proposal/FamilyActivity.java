@@ -12,6 +12,7 @@ import android.widget.ImageView;
 
 
 public class FamilyActivity extends AppCompatActivity {
+    private Button patientview;
     private Button recordButton;
     private Button settings;
     private Button adduser;
@@ -21,25 +22,36 @@ public class FamilyActivity extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         setContentView(R.layout.activity_family);
-        recordButton = (Button) findViewById(R.id.button);
+        patientview = (Button) findViewById(R.id.patientview);
+        patientview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openImageActivity();
+            }
+        });
+        recordButton = (Button) findViewById(R.id.recentActivity);
         recordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 openRecordActivity();
             }
         });
-        settings = (Button) findViewById(R.id.button4);
+        settings = (Button) findViewById(R.id.createEvent);
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 openConfigActivity();
             }
         });
-        adduser = (Button) findViewById(R.id.button2);
+        adduser = (Button) findViewById(R.id.addFamilyMember);
         adduser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) { openAddUser(); }
         });
+    }
+    public void openImageActivity(){
+        Intent intent = new Intent(this, ImageGenerationActivity.class);
+        startActivity(intent);
     }
     public void openRecordActivity(){
         Intent intent = new Intent(this, RecordActivity.class);
