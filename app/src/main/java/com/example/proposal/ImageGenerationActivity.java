@@ -111,21 +111,21 @@ public class ImageGenerationActivity extends AppCompatActivity implements GetIma
                 }
             });
 
-    public Call<TaskPOJO[]> getImage() {
+    public Call<PhotoPOJO[]> getImage() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://192.168.4.214:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         getimage = retrofit.create(GetImage.class);
-        Call<TaskPOJO[]> call = getimage.getImage();
-        call.enqueue(new Callback<TaskPOJO[]>() {
+        Call<PhotoPOJO[]> call = getimage.getImage();
+        call.enqueue(new Callback<PhotoPOJO[]>() {
             @Override
-            public void onResponse(Call<TaskPOJO[]> call, Response<TaskPOJO[]> response) {
+            public void onResponse(Call<PhotoPOJO[]> call, Response<PhotoPOJO[]> response) {
                 if (!response.isSuccessful()) {
                     Log.i("responsecode", "i failed");
                     return;
                 }
-                TaskPOJO[] postResponse = response.body();
+                PhotoPOJO[] postResponse = response.body();
                 int k;
                 for (k=0; k < postResponse.length; k++) {
                     descriptions.add(postResponse[k].getDescription());
@@ -137,13 +137,13 @@ public class ImageGenerationActivity extends AppCompatActivity implements GetIma
                 Log.i("viewnum", "called");
             }
             @Override
-            public void onFailure(Call<TaskPOJO[]> call, Throwable t) {
+            public void onFailure(Call<PhotoPOJO[]> call, Throwable t) {
                 Log.i("Failure", "failed to reach api" + t.getMessage());
             }
         });
         return call;
     }
-    private void addFlipperImages(ViewFlipper flipper, TaskPOJO[] array) {
+    private void addFlipperImages(ViewFlipper flipper, PhotoPOJO[] array) {
         int imageCount = array.length;
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.MATCH_PARENT,

@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="8dp"
+    android:background="#E0FFFF"
     android:orientation="vertical"
     tools:context=".FamilyActivity">
 
@@ -20,7 +21,7 @@
         android:text="Patient View"
         android:textSize="24sp"
         android:fontFamily="@font/bold"
-        android:textColor="#3cdddc"
+        android:textColor="#0097A7"
         android:paddingRight="10dp"
         />
 
@@ -31,7 +32,8 @@
         android:layout_below="@id/patientview"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
-        android:background="#ffffff"
+        android:fontFamily="@font/bold"
+        android:background="@drawable/familyimage"
         android:gravity="right|top"
         android:paddingTop="10dp"
         android:paddingRight="10dp"
@@ -44,13 +46,14 @@
         android:layout_width="400dp"
         android:layout_height="100dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="100dp"
-        android:background="#ffffff"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/recordimage"
         android:gravity="right|top"
         android:paddingTop="10dp"
         android:paddingRight="10dp"
         android:text="Recent Activity"
-        android:textAllCaps="false"
+        android:fontFamily="@font/bold"
+        android:textAllCaps="true"
         android:textColor="#0097A7"
         android:textSize="24sp" />
 
@@ -58,6 +61,7 @@
         android:id="@+id/createEvent"
         android:layout_width="400dp"
         android:layout_height="100dp"
+        android:fontFamily="@font/bold"
         android:layout_below="@id/recentActivity"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
@@ -67,7 +71,7 @@
         android:gravity="right|top"
         android:paddingTop="10dp"
         android:textSize="24sp"
-        android:textColor="#3cdddc"
+        android:textColor="#0097A7"
         tools:layout_editor_absoluteX="110dp"
         tools:layout_editor_absoluteY="201dp" />
 </RelativeLayout>

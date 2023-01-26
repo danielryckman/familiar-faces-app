@@ -65,7 +65,7 @@ public class EventEditActivity extends AppCompatActivity
     {
         String eventName = eventNameET.getText().toString();
         String description = descriptionET.getText().toString();
-        String dateTime = CalendarUtils.formatEpochDate(CalendarUtils.selectedDate);
+        //String dateTime = CalendarUtils.formatEpochDate(CalendarUtils.selectedDate);
         //long epochTime = CalendarUtils.epochTime(dateTime);
         Event newEvent = new Event(eventName, description, CalendarUtils.selectedDate,(long)hour*60+minute*60, 1);
         Event.eventsList.add(newEvent);

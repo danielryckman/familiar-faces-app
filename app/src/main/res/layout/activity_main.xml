@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="8dp"
+    android:background="#F5e4d3"
     tools:context=".MainActivity">
 
     <TextView
@@ -76,7 +77,7 @@
         android:layout_marginTop="27dp"
         android:text="Login"
         android:textAllCaps="false"
-        android:backgroundTint="@android:color/holo_blue_light"
+        android:backgroundTint="#ffa500"
         android:textColor="@color/white"
         android:textSize="20sp"
         android:textStyle="bold"

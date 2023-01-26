@@ -61,4 +61,6 @@ public class PhotoPOJO {
     }
 
     public String getImage() { return image; }
+
+    public String getDescription() { return description; }
 }
