@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GridLabelRenderer;
+import com.jjoe64.graphview.LegendRenderer;
 import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
@@ -55,6 +56,7 @@ public class RecordActivity extends AppCompatActivity implements OnGetRecordsLis
 
         // initialize views
         textView = findViewById(R.id.recordtextView);
+        textView.setText("Shirley F Recent Activities ");
         etText = findViewById(R.id.recordetSpeech);
 
         //create a new Test
@@ -150,12 +152,20 @@ public class RecordActivity extends AppCompatActivity implements OnGetRecordsLis
         graph.addSeries(testNumberSeries);
         graph.addSeries(commentNumberSeries);
         graph.addSeries(testScoreSeries);
+
+        appTimeSeries.setTitle("time using the App");
+        photoTimeSeries.setTitle("time looking at photo");
+        testTimeSeries.setTitle("time playing puzzles");
+        testNumberSeries.setTitle("number of test taken");
+        commentNumberSeries.setTitle("number of comments left for photo");
+        testScoreSeries.setTitle("average test score of the day");
+
         appTimeSeries.setColor(Color.GREEN);
         photoTimeSeries.setColor(Color.YELLOW);
         testTimeSeries.setColor(Color.CYAN);
         testNumberSeries.setColor(Color.MAGENTA);
         commentNumberSeries.setColor(Color.BLUE);
-        testScoreSeries.setColor(Color.GREEN);
+        testScoreSeries.setColor(Color.RED);
 
         appTimeSeries.setDrawDataPoints(true);
         photoTimeSeries.setDrawDataPoints(true);
@@ -170,12 +180,16 @@ public class RecordActivity extends AppCompatActivity implements OnGetRecordsLis
         // set manual x bounds to have nice steps
         graph.getViewport().setMinX(records.get(0).getRdate());
         graph.getViewport().setMaxX(records.get(records.size()-1).getRdate());
+        graph.getViewport().setScalable(true);
+        graph.getViewport().setScrollable(true);
+
         //graph.getViewport().setMinX(0);
         //graph.getViewport().setMaxX(10);
         graph.getGridLabelRenderer().setHorizontalAxisTitle("Date");
         graph.getGridLabelRenderer().setVerticalAxisTitle("Hours");
-        graph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE);
-        graph.getGridLabelRenderer().
+        graph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.BOTH);
+        graph.getLegendRenderer().setVisible(true);
+        graph.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
         graph.getViewport().setMinY(0);
         graph.getViewport().setMaxY(10);
         graph.getViewport().setXAxisBoundsManual(true);
