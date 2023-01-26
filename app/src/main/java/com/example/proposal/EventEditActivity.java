@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -64,7 +65,7 @@ public class EventEditActivity extends AppCompatActivity
     {
         String eventName = eventNameET.getText().toString();
         String description = descriptionET.getText().toString();
-        //String dateTime = CalendarUtils.formatEpochDate(CalendarUtils.selectedDate);
+        String dateTime = CalendarUtils.formatEpochDate(CalendarUtils.selectedDate);
         //long epochTime = CalendarUtils.epochTime(dateTime);
         Event newEvent = new Event(eventName, description, CalendarUtils.selectedDate,(long)hour*60+minute*60, 1);
         Event.eventsList.add(newEvent);

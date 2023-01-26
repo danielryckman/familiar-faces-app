@@ -13,6 +13,7 @@ import android.widget.ImageView;
 
 public class FamilyActivity extends AppCompatActivity {
     private Button patientview;
+    private Button recordButton;
     private Button settings;
     private Button adduser;
     @Override
@@ -26,6 +27,13 @@ public class FamilyActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 openImageActivity();
+            }
+        });
+        recordButton = (Button) findViewById(R.id.recentActivity);
+        recordButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openRecordActivity();
             }
         });
         settings = (Button) findViewById(R.id.createEvent);
@@ -43,6 +51,10 @@ public class FamilyActivity extends AppCompatActivity {
     }
     public void openImageActivity(){
         Intent intent = new Intent(this, ImageGenerationActivity.class);
+        startActivity(intent);
+    }
+    public void openRecordActivity(){
+        Intent intent = new Intent(this, RecordActivity.class);
         startActivity(intent);
     }
     public void openConfigActivity(){
