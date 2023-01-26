@@ -12,7 +12,7 @@ import android.widget.ImageView;
 
 
 public class FamilyActivity extends AppCompatActivity {
-    private Button button;
+    private Button recordButton;
     private Button settings;
     private Button adduser;
     @Override
@@ -21,11 +21,11 @@ public class FamilyActivity extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         setContentView(R.layout.activity_family);
-        button = (Button) findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
+        recordButton = (Button) findViewById(R.id.button);
+        recordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openImageActivity();
+                openRecordActivity();
             }
         });
         settings = (Button) findViewById(R.id.button4);
@@ -41,8 +41,8 @@ public class FamilyActivity extends AppCompatActivity {
             public void onClick(View view) { openAddUser(); }
         });
     }
-    public void openImageActivity(){
-        Intent intent = new Intent(this, ImageGenerationActivity.class);
+    public void openRecordActivity(){
+        Intent intent = new Intent(this, RecordActivity.class);
         startActivity(intent);
     }
     public void openConfigActivity(){

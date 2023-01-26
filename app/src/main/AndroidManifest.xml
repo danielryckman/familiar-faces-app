@@ -68,6 +68,13 @@
                 android:value="" />
         </activity>
         <activity
+            android:name=".RecordActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".PuzzleActivity"
             android:exported="false">
             <meta-data
