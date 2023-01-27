@@ -158,6 +158,7 @@ public class ImageGenerationActivity extends AppCompatActivity implements GetIma
                 l = postResponse.length;
                 String imageDescription = postResponse[0].getTitle();
                 descriptionText.setText(imageDescription);
+                setImageAnnotation(annotations.get(0));
                 //SpannableString str=new SpannableString("hello");
                 //str.setSpan(new BackgroundColorSpan(Color.WHITE), 0, str.length(), 0);
                 //annotationView.setText(str);
@@ -231,7 +232,7 @@ public class ImageGenerationActivity extends AppCompatActivity implements GetIma
                         }
                         else {
                             descriptionText.setText(titles.get(i-1));
-                            setImageAnnotation(annotations.get(l-1));
+                            setImageAnnotation(annotations.get(i-1));
                             //Log.i("setting", titles.get(i-1));
                             i = i-1;
                         }
