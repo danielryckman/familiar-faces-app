@@ -80,7 +80,6 @@ public class PuzzleActivity extends AppCompatActivity implements OnNewTestListen
         textView = findViewById(R.id.testtextView);
         etText = findViewById(R.id.testetSpeech);
         ivMic = findViewById(R.id.testivSpeak);
-        ivCopy = findViewById(R.id.testivCopy);
         button1 = (Button)findViewById(R.id.button1);
         button2 = (Button)findViewById(R.id.button2);
         button3 = (Button)findViewById(R.id.button3);
@@ -114,17 +113,6 @@ public class PuzzleActivity extends AppCompatActivity implements OnNewTestListen
                 intent.putExtra(RecognizerIntent.EXTRA_PROMPT,"Speak now!");
                 // starting intent for result
                 activityResultLauncher.launch(intent);
-            }
-        });
-
-        // on click listener to copy the speech
-        ivCopy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // code to copy to clipboard
-                ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-                clipboardManager.setPrimaryClip(ClipData.newPlainText("label",etText.getText().toString().trim()));
-                Toast.makeText(PuzzleActivity.this, "Copied!", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -184,7 +172,9 @@ public class PuzzleActivity extends AppCompatActivity implements OnNewTestListen
 
             }
         }else if(result == -1 && retry < 3 ){
-            textView.setText(textView.getText() + "\n Hmm. Not quite right. Try again?");
+            if(!String.valueOf(textView.getText()).contains("Not quite right.")) {
+                textView.setText(textView.getText() + "\n Hmm. Not quite right. Try again?");
+            }
             retry ++;
             return;
         }

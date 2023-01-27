@@ -65,7 +65,7 @@ public class RecordActivity extends AppCompatActivity implements OnGetRecordsLis
 
         // initialize views
         nameView = findViewById(R.id.nametextView);
-        nameView.setText("Shirley Ford");
+        nameView.setText("Shirley Foster");
         textView = findViewById(R.id.recordtextView);
         textView.setText("Recent Activities");
 
@@ -230,25 +230,25 @@ public class RecordActivity extends AppCompatActivity implements OnGetRecordsLis
         //graph.getViewport().setScrollable(true);
 
         graph.getGridLabelRenderer().setHorizontalAxisTitle("Date");
-        graph.getGridLabelRenderer().setVerticalAxisTitle("Hours");
+        graph.getGridLabelRenderer().setVerticalAxisTitle("Minutes/Count");
         graph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.BOTH);
         graph.getLegendRenderer().setVisible(true);
         graph.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
         graph.getLegendRenderer().setBackgroundColor(Color.WHITE);
         graph.getViewport().setMinY(0);
-        graph.getViewport().setMaxY(9);
+        graph.getViewport().setMaxY(30);
         graph.getViewport().setXAxisBoundsManual(false);
         graph.getViewport().setYAxisBoundsManual(true);
         //graph.getGridLabelRenderer().setHumanRounding(false, true);
 
         graph2.getGridLabelRenderer().setHorizontalAxisTitle("Date");
-        graph2.getGridLabelRenderer().setVerticalAxisTitle("Hours");
+        graph2.getGridLabelRenderer().setVerticalAxisTitle("Minutes/Count");
         graph2.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.BOTH);
         graph2.getLegendRenderer().setVisible(true);
         graph2.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
         graph2.getLegendRenderer().setBackgroundColor(Color.WHITE);
         graph2.getViewport().setMinY(0);
-        graph2.getViewport().setMaxY(9);
+        graph2.getViewport().setMaxY(8);
         graph2.getViewport().setXAxisBoundsManual(false);
         graph2.getViewport().setYAxisBoundsManual(true);
         //graph2.getGridLabelRenderer().setHumanRounding(false, true);

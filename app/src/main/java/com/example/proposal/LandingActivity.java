@@ -52,7 +52,6 @@ public class LandingActivity extends AppCompatActivity implements AdapterView.On
         textView = findViewById(R.id.landingtextView);
         etText = findViewById(R.id.landingetSpeech);
         ivMic = findViewById(R.id.landingivSpeak);
-        ivCopy = findViewById(R.id.landingivCopy);
 
         String greetings= "Welcome!";
         Calendar c = Calendar.getInstance();
@@ -65,7 +64,7 @@ public class LandingActivity extends AppCompatActivity implements AdapterView.On
         }else{
             greetings= "Good Evening!";
         }
-        textView.setText(greetings + " Shirley!\n I am very happy to see you here.\n What would you like to do next? You can say 'photo' to look at today's new photos or 'puzzle' to play a new puzzle.");
+        textView.setText(greetings + " Shirley!\nHappy to see you here.\nWhat would you like to do next? Say 'photo' to look at today's new photos or 'puzzle' to play a new puzzle.");
         etText.setText("");
 
 
@@ -80,17 +79,6 @@ public class LandingActivity extends AppCompatActivity implements AdapterView.On
                 intent.putExtra(RecognizerIntent.EXTRA_PROMPT,"Speak now!");
                 // starting intent for result
                 activityResultLauncher.launch(intent);
-            }
-        });
-
-        // on click listener to copy the speech
-        ivCopy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // code to copy to clipboard
-                ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-                clipboardManager.setPrimaryClip(ClipData.newPlainText("label",etText.getText().toString().trim()));
-                Toast.makeText(LandingActivity.this, "Copied!", Toast.LENGTH_SHORT).show();
             }
         });
     }
