@@ -135,7 +135,6 @@ public class ImageGenerationActivity extends AppCompatActivity implements GetIma
     public void textChanged() {
     //save the comment for the photo object and invoke the rest service to update
     }
-
     public Call<PhotoPOJO[]> getImage() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://192.168.4.214:8080/")
@@ -159,6 +158,7 @@ public class ImageGenerationActivity extends AppCompatActivity implements GetIma
                 l = postResponse.length;
                 String imageDescription = postResponse[0].getTitle();
                 descriptionText.setText(imageDescription);
+                setImageAnnotation(annotations.get(0));
                 //SpannableString str=new SpannableString("hello");
                 //str.setSpan(new BackgroundColorSpan(Color.WHITE), 0, str.length(), 0);
                 //annotationView.setText(str);
@@ -182,7 +182,6 @@ public class ImageGenerationActivity extends AppCompatActivity implements GetIma
         String c = String.valueOf(b);
         Log.i("numimage", c);
         for (int count = 0; count < imageCount; count++) {
-            Log.i("description", array[count].getDescription());
             ImageView imageView = new ImageView(this);
             String image = array[count].getImage();
             byte[] decodedBytes = android.util.Base64.decode(image, Base64.DEFAULT);
@@ -233,7 +232,7 @@ public class ImageGenerationActivity extends AppCompatActivity implements GetIma
                         }
                         else {
                             descriptionText.setText(titles.get(i-1));
-                            setImageAnnotation(annotations.get(l-1));
+                            setImageAnnotation(annotations.get(i-1));
                             //Log.i("setting", titles.get(i-1));
                             i = i-1;
                         }

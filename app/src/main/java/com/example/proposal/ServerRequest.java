@@ -63,11 +63,6 @@ public class ServerRequest implements ServerApi, UserApi{
         });
         return call;
     }
-
-
-
-
-
     /*
     static String baseUrl = "http://192.168.4.214:8080/";
     public static void postTask(Event event) throws IOException {

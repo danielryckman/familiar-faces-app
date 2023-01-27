@@ -25,10 +25,10 @@ public class Event
     private String name;
     private String description;
     private LocalDate date;
-    private long time;
+    private String time;
     private int repeat;
 
-    public Event(String name, String description, LocalDate date, long time, int repeat)
+    public Event(String name, String description, LocalDate date, String time, int repeat)
     {
         this.name = name;
         this.description = description;
@@ -59,12 +59,12 @@ public class Event
         this.date = date;
     }
 
-    public long getTime()
+    public String getTime()
     {
         return time;
     }
 
-    public void setTime(long time)
+    public void setTime(String time)
     {
         this.time = time;
     }

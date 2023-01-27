@@ -174,4 +174,5 @@ public class PhotoPOJO {
     }
 
     public String getImage() { return image; }
+
 }
