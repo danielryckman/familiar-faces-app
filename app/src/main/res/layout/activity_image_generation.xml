@@ -28,10 +28,9 @@
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:textSize="18dp"
+            android:fontFamily="@font/bold"
             android:gravity="center"
             tools:layout_constraintBottom_toTopOf="@+id/imageFrames"/>
-
-
     </FrameLayout>
     <RelativeLayout
         android:id="@+id/slideShowBtn"
@@ -77,9 +76,9 @@
     <EditText
         android:id="@+id/photoetSpeech"
         android:layout_width="350dp"
-        android:layout_height="150dp"
+        android:layout_height="100dp"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="29dp"
+        android:layout_marginTop="0dp"
         android:layout_marginEnd="31dp"
         android:background="@drawable/et_bg"
         android:ems="10"
@@ -96,7 +95,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginBottom="50dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="25dp"
         android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

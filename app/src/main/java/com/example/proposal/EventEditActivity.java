@@ -27,6 +27,7 @@ public class EventEditActivity extends AppCompatActivity
     private ServerApi serverApi;
     private JsonPlaceHolderApi jsonPlaceHolderApi;
     private int hour, minute;
+    private String hour2, minute2;
     private LocalTime time;
 
     @Override
@@ -67,7 +68,9 @@ public class EventEditActivity extends AppCompatActivity
         String description = descriptionET.getText().toString();
         //String dateTime = CalendarUtils.formatEpochDate(CalendarUtils.selectedDate);
         //long epochTime = CalendarUtils.epochTime(dateTime);
-        Event newEvent = new Event(eventName, description, CalendarUtils.selectedDate,(long)hour*60+minute*60, 1);
+        hour2 = String.valueOf(hour);
+        minute2 = String.valueOf(minute);
+        Event newEvent = new Event(eventName, description, CalendarUtils.selectedDate,hour2+":"+minute2, 1);
         Event.eventsList.add(newEvent);
         TaskPOJO apipost = new TaskPOJO(eventName, description, (long)hour*60+minute*60, 1);
         try {
