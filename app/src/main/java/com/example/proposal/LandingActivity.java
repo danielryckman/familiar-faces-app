@@ -6,6 +6,7 @@ import android.content.ClipboardManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+import android.speech.tts.TextToSpeech;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -21,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -30,6 +32,8 @@ public class LandingActivity extends AppCompatActivity implements AdapterView.On
     EditText etText;
     ImageView ivMic,ivCopy;
     String lcode = "en-US";
+
+    TextToSpeech speak;
 
     private NewTest newTest;
 
@@ -64,12 +68,26 @@ public class LandingActivity extends AppCompatActivity implements AdapterView.On
         }else{
             greetings= "Good Evening!";
         }
-        textView.setText(greetings + " Shirley!\nHappy to see you here.\nWhat would you like to do next? Say 'photo' to look at today's new photos or 'puzzle' to play a new puzzle.");
+        String username = MainActivity.currentUser.getNickname() != null && !MainActivity.currentUser.getNickname().isEmpty()? MainActivity.currentUser.getNickname():MainActivity.currentUser.getFirstname();
+        String welcomeMsg =greetings + " " +username + "!\nHappy to see you here.\nWhat would you like to do next? Say 'photo' to look at today's new photos or 'puzzle' to play a new puzzle.";
+        textView.setText(welcomeMsg);
         etText.setText("");
+
+        speak = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int i) {
+                if(i != TextToSpeech.ERROR){
+                    speak.setLanguage(Locale.US);
+                    speak.speak(welcomeMsg, TextToSpeech.QUEUE_FLUSH,null, null);
+                }
+            }
+        });
+
+
 
 
         // on click listener for mic icon
-        ivMic.setOnClickListener(new View.OnClickListener() {
+       ivMic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // creating intent using RecognizerIntent to convert speech to text
@@ -113,6 +131,10 @@ public class LandingActivity extends AppCompatActivity implements AdapterView.On
             etText.setText("");
             intent = new Intent(this, PuzzleActivity.class);
             startActivity(intent);
+        }else if(command.contains("family member")){
+            etText.setText("");
+            intent = new Intent(this, AddUser.class);
+            startActivity(intent);
         }
     }
     @Override
@@ -127,6 +149,5 @@ public class LandingActivity extends AppCompatActivity implements AdapterView.On
         // automatically generated method
         // for implementing onItemSelectedListener
     }
-
 
 }

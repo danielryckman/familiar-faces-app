@@ -26,7 +26,7 @@ public class GetRecordsRequest implements GetRecords {
     private OnGetRecordsListener onGetRecordsListener;
     public Call<List<RecordPOJO>> getRecords(long userid, long begin, long end){
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.4.214:8080/")
+                .baseUrl(MainActivity.WS_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         getRecords = retrofit.create(GetRecords.class);

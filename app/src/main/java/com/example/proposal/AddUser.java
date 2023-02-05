@@ -2,7 +2,11 @@ package com.example.proposal;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,43 +16,89 @@ public class AddUser extends AppCompatActivity {
     private EditText firstName;
     private EditText lastName;
     private EditText dob;
-    private EditText gender;
+
+    private CheckBox isAdminCheckBox;
+    private EditText emailEdit;
+
+    private EditText passwordEdit;
+
+    private EditText descriptionEdit;
+
+    private RadioGroup gender;
     private EditText nickname;
     private EditText hobbies;
     private EditText relationship;
     String fn;
     String ln;
+
+    String email;
+
+    String password;
     String birthdate;
     String g;
     String n;
     String h;
     String r;
-    protected void onCreate(Bundle savedInstanceState)
-    {
+
+    String description;
+
+    int isAdmin;
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_user);
         firstName = (EditText) findViewById(R.id.firstname);
         lastName = (EditText) findViewById(R.id.lastname);
+        emailEdit = (EditText) findViewById(R.id.email);
+        passwordEdit = (EditText) findViewById(R.id.password);
         dob = (EditText) findViewById(R.id.dob);
-        gender = (EditText) findViewById(R.id.gender);
+        gender = (RadioGroup) findViewById(R.id.groupradio);
         nickname = (EditText) findViewById(R.id.nickname);
         hobbies = (EditText) findViewById(R.id.hobbies);
         relationship = (EditText) findViewById(R.id.relationship);
+        descriptionEdit = (EditText) findViewById(R.id.description);
+        isAdminCheckBox = (CheckBox) findViewById(R.id.isadmin);
+        isAdminCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                isAdmin = b ? 1: 0;
+            }
+        });
+        gender.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            // Check which radio button has been clicked
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                RadioButton radioButton = (RadioButton) group.findViewById(checkedId);
+                g = radioButton.getText().equals("M") ? "m" : "f";
+            }
+        });
     }
     public void addUser(View view){
         fn = firstName.getText().toString();
         ln = lastName.getText().toString();
+        email = emailEdit.getText().toString();
+        password = passwordEdit.getText().toString();
         birthdate = dob.getText().toString();
-        g = gender.getText().toString();
         n = nickname.getText().toString();
         h = hobbies.getText().toString();
         r = relationship.getText().toString();
-        User user = new User(fn, ln, birthdate, g, n, h, r);
-        try {
-            UserApi userApi = new ServerRequest();
-            userApi.createUser(user);
-        } catch (Exception e) {
-            e.printStackTrace();
+        description = descriptionEdit.getText().toString();
+        if(MainActivity.currentUser == null) {
+            User user = new User(fn, ln, birthdate, g, n, h, r, email, password, description);
+            try {
+                UserApi userApi = new ServerRequest();
+                userApi.createUser(user);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }else{
+            FamilymemberPOJO familyMember = new FamilymemberPOJO(fn, ln, g, birthdate, n, h, email, password, description, r, isAdmin);
+            try {
+                NewFamilymemberApi newFamilymember = new NewFamilymemberRequest();
+                newFamilymember.newFamilyMember(familyMember, MainActivity.currentUser.getId());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         finish();
     }

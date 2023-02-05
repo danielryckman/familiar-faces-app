@@ -26,8 +26,8 @@ public class UserPOJO {
         this.dob = dob;
     }
 
-    public void setGender(String geneder) {
-        this.gender = geneder;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     public void setNickname(String nickname) {
@@ -82,6 +82,8 @@ public class UserPOJO {
 
     private String hobbies;
 
+    private String description;
+
     private List<PhotoPOJO> photo;
 
     private List<TestPOJO> tests;
@@ -91,7 +93,27 @@ public class UserPOJO {
     private List<TaskPOJO> tasks;
     private String image;
 
-    public UserPOJO(long id, String firstname, String lastname, String gender, String dob, String nickname, String hobbies, int repeat) {
+    private String email;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    private String password;
+
+    public UserPOJO(long id, String firstname, String lastname, String gender, String dob, String nickname, String hobbies, String email, String password) {
         this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
@@ -99,6 +121,8 @@ public class UserPOJO {
         this.nickname = nickname;
         this.hobbies = hobbies;
         this.gender = gender;
+        this.email = email;
+        this.password = password;
     }
     public String getFirstname() {
         return firstname;

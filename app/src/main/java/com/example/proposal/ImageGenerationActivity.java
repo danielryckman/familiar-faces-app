@@ -137,7 +137,7 @@ public class ImageGenerationActivity extends AppCompatActivity implements GetIma
     }
     public Call<PhotoPOJO[]> getImage() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.4.214:8080/")
+                .baseUrl(MainActivity.WS_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         getimage = retrofit.create(GetImage.class);

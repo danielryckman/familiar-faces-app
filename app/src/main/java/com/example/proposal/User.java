@@ -15,7 +15,13 @@ public class User {
 
     private String relationship;
 
-    public User(String firstname, String lastname, String dob, String gender, String nickname, String hobbies, String relationship) {
+    private String email;
+
+    private String password;
+
+    private String description;
+
+    public User(String firstname, String lastname, String dob, String gender, String nickname, String hobbies, String relationship, String email, String password, String description) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.dob = dob;
@@ -23,6 +29,9 @@ public class User {
         this.nickname = nickname;
         this.hobbies = hobbies;
         this.relationship = relationship;
+        this.email = email;
+        this.password=password;
+        this.description = description;
     }
 
     public String getFirstname() {

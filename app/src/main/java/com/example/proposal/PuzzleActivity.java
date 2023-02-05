@@ -87,7 +87,8 @@ public class PuzzleActivity extends AppCompatActivity implements OnNewTestListen
         //create a new Test
         try {
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("http://192.168.4.214:8080/")
+                    //.baseUrl("https://familiar-faces-service.azurewebsites.net/")
+                    .baseUrl(MainActivity.WS_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
             newTest = retrofit.create(NewTest.class);

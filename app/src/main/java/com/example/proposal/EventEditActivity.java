@@ -75,7 +75,7 @@ public class EventEditActivity extends AppCompatActivity
         TaskPOJO apipost = new TaskPOJO(eventName, description, (long)hour*60+minute*60, 1);
         try {
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("http://192.168.4.171:7860/")
+                    .baseUrl(MainActivity.WS_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
             jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderApi.class);

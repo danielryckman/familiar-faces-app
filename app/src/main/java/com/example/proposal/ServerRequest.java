@@ -15,7 +15,7 @@ public class ServerRequest implements ServerApi, UserApi{
     private JsonPlaceHolderApi jsonPlaceHolderApi;
     public Call<TaskPOJO> createPostTask(TaskPOJO apiPost){
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.4.214:8080/")
+                .baseUrl("https://familiar-faces-service.azurewebsites.net/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         serverApi = retrofit.create(ServerApi.class);
@@ -42,6 +42,7 @@ public class ServerRequest implements ServerApi, UserApi{
     }
     public Call<User> createUser(User user){
         Retrofit retrofit = new Retrofit.Builder()
+                //.baseUrl("https://familiar-faces-service.azurewebsites.net/")
                 .baseUrl("http://192.168.4.214:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
@@ -64,7 +65,7 @@ public class ServerRequest implements ServerApi, UserApi{
         return call;
     }
     /*
-    static String baseUrl = "http://192.168.4.214:8080/";
+    static String baseUrl = "https://familiar-faces-service.azurewebsites.net/";
     public static void postTask(Event event) throws IOException {
         String name = event.getName();
         String description = event.getDescription();

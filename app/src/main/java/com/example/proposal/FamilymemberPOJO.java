@@ -50,6 +50,8 @@ public class FamilymemberPOJO {
         return dob;
     }
 
+    public int isadmin;
+
     public String getGender() {
         return gender;
     }
@@ -72,18 +74,33 @@ public class FamilymemberPOJO {
 
     private String dob;
 
+    private String description;
+
     private String gender;
+
+    private String email;
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    private String password;
 
     private String nickname;
 
     private String hobbies;
 
     private String relationship;
+
     private List<PhotoPOJO> photo;
 
     private UserPOJO user;
 
-    public FamilymemberPOJO(long id, String firstname, String lastname, String gender, String dob, String nickname, String hobbies, int repeat) {
+    public FamilymemberPOJO(long id, String firstname, String lastname, String gender, String dob, String nickname, String hobbies,String email, String password, String description, int isAdmin) {
         this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
@@ -91,6 +108,26 @@ public class FamilymemberPOJO {
         this.nickname = nickname;
         this.hobbies = hobbies;
         this.gender = gender;
+        this.email = email;
+        this.password = password;
+        this.description = description;
+        this.relationship = relationship;
+        this.isadmin = isAdmin;
+    }
+
+    public FamilymemberPOJO(String firstname, String lastname, String gender, String dob, String nickname, String hobbies, String email, String password, String description, String relationship,int isAdmin) {
+        this.id = id;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.dob = dob;
+        this.nickname = nickname;
+        this.hobbies = hobbies;
+        this.gender = gender;
+        this.email = email;
+        this.password = password;
+        this.description = description;
+        this.relationship = relationship;
+        this.isadmin = isAdmin;
     }
     public String getFirstname() {
         return firstname;

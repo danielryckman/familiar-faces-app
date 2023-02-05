@@ -24,7 +24,7 @@ public class TestRequest implements NewTest{
     private OnNewTestListener onNewTestListener;
     public Call<TestPOJO> newTest(TestPOJO test, long userid){
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.4.214:8080/")
+                .baseUrl(MainActivity.WS_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         newTest = retrofit.create(NewTest.class);
