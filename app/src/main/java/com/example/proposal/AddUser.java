@@ -10,8 +10,6 @@ import android.widget.RadioGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.time.LocalDate;
-
 public class AddUser extends AppCompatActivity {
     private EditText firstName;
     private EditText lastName;

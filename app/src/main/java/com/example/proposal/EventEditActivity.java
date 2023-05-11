@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,8 +23,7 @@ public class EventEditActivity extends AppCompatActivity
     private EditText descriptionET;
     private TextView eventDateTV, eventTimeTV;
     Button timeButton;
-    private ServerApi serverApi;
-    private JsonPlaceHolderApi jsonPlaceHolderApi;
+     private NewTaskApi newTaskApi;
     private int hour, minute;
     private String hour2, minute2;
     private LocalTime time;
@@ -72,18 +70,15 @@ public class EventEditActivity extends AppCompatActivity
         minute2 = String.valueOf(minute);
         Event newEvent = new Event(eventName, description, CalendarUtils.selectedDate,hour2+":"+minute2, 1);
         Event.eventsList.add(newEvent);
-        TaskPOJO apipost = new TaskPOJO(eventName, description, (long)hour*60+minute*60, 1);
+        TaskPOJO newTask = new TaskPOJO(eventName, description, (long)hour*60+minute*60, 1);
         try {
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(MainActivity.WS_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
-            jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderApi.class);
-            Post post = new Post(description, 20);
-            jsonPlaceHolderApi.createPost(post);
-            ServerApi serverApi = new ServerRequest();
-            //retrofit.create(ServerApi.class);
-            serverApi.createPostTask(apipost);
+            newTaskApi = retrofit.create(NewTaskApi.class);
+            NewTaskRequest newTaskRequest = new NewTaskRequest();
+            newTaskRequest.newTask(newTask, MainActivity.currentFamilyMember.getUserid());
         } catch (Exception e) {
            e.printStackTrace();
         }

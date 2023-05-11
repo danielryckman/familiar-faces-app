@@ -34,6 +34,16 @@ public class PhotoPOJO {
 
     private long datelastviewed;
 
+    public String getUploaddir() {
+        return uploaddir;
+    }
+
+    public void setUploaddir(String uploaddir) {
+        this.uploaddir = uploaddir;
+    }
+
+    private String uploaddir;
+
     public String getName() {
         return name;
     }
@@ -161,6 +171,7 @@ public class PhotoPOJO {
 
     private RecordPOJO myrecord;
 
+    public PhotoPOJO(){}
     public PhotoPOJO(long id, String name, String description, long datetoshow, long datelastviewed, long datecreated, String comment, String ptype) {
         this.id = id;
         this.name = name;

@@ -96,11 +96,29 @@ public class FamilymemberPOJO {
 
     private String relationship;
 
+    public long getUserid() {
+        return userid;
+    }
+
+    public void setUserid(long userid) {
+        this.userid = userid;
+    }
+
+    private long userid;
+
     private List<PhotoPOJO> photo;
 
     private UserPOJO user;
 
-    public FamilymemberPOJO(long id, String firstname, String lastname, String gender, String dob, String nickname, String hobbies,String email, String password, String description, int isAdmin) {
+    public UserPOJO getUser() {
+        return user;
+    }
+
+    public void setUser(UserPOJO user) {
+        this.user = user;
+    }
+
+    public FamilymemberPOJO(long id, String firstname, String lastname, String gender, String dob, String nickname, String hobbies, String email, String password, String description, int isAdmin) {
         this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;

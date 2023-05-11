@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AlbumActivity">
+
+    <TextView
+        android:id="@+id/albumTextView"
+        android:layout_width="300dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="10dp"
+        android:text="Album: Test"
+        android:textColor="@color/blue"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/deleteButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/annotationText"
+        tools:ignore="MissingConstraints"/>
+
+    <Button
+        android:id="@+id/deleteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginTop="10dp"
+        android:src="@android:drawable/ic_menu_delete"
+        android:text="delete"
+        android:textSize="10sp"
+        android:textAlignment="center"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/albumTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/annotationText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:ems="6"
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@+id/albumTextView"
+        app:layout_constraintBottom_toTopOf="@+id/imageView"
+        tools:ignore="MissingConstraints" />
+    <!-- create a ImageView and Gallery -->
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="fill_parent"
+        android:layout_height="250dp"
+        android:scaleType="fitXY"
+        app:layout_constraintTop_toBottomOf="@+id/annotationText"
+        app:layout_constraintBottom_toTopOf="@+id/descriptionText"
+        android:layout_marginTop="10dp"
+        tools:ignore="MissingConstraints"/>
+
+    <TextView
+        android:id="@+id/descriptionText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:ems="6"
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintBottom_toTopOf="@+id/languagesGallery"
+        tools:ignore="MissingConstraints" />
+    <!-- By using android:spacing we can give spacing between images
+         android:animationDuration="3000" -> for animation running -->
+    <Gallery
+        android:id="@+id/languagesGallery"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+         android:animationDuration="2000"
+        android:padding="10dp"
+        android:spacing="5dp"
+        app:layout_constraintTop_toBottomOf="@+id/descriptionText"
+        app:layout_constraintBottom_toTopOf="@+id/albumetSpeech"
+        android:unselectedAlpha="50" />
+
+    <EditText
+        android:id="@+id/albumetSpeech"
+        android:layout_width="350dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="29dp"
+        android:layout_marginEnd="31dp"
+        android:background="@drawable/et_bg"
+        android:ems="10"
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
+        android:maxLines="10"
+        android:padding="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/languagesGallery"
+        app:layout_constraintBottom_toTopOf="@+id/albumivSpeak"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <ImageView
+        android:id="@+id/albumivSpeak"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:clickable="true"
+        app:layout_constraintTop_toBottomOf="@+id/albumetSpeech"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:srcCompat="@drawable/ic_mic"
+        tools:ignore="MissingConstraints" />
+</androidx.constraintlayout.widget.ConstraintLayout>

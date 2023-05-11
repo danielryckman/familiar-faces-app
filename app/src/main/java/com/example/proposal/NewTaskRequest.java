@@ -9,9 +9,46 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class ServerRequest implements UserApi{
+public class NewTaskRequest implements NewTaskApi{
+    private NewTaskApi newTaskApi;
+
     private UserApi userApi;
 
+    public void setOnNewTaskListener(OnNewTaskListener onNewTaskListener) {
+        this.onNewTaskListener = onNewTaskListener;
+    }
+
+    private OnNewTaskListener onNewTaskListener;
+
+    public Call<TaskPOJO> newTask(TaskPOJO task, long userid){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(MainActivity.WS_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        newTaskApi = retrofit.create(NewTaskApi.class);
+        Call<TaskPOJO> call = newTaskApi.newTask(task, userid);
+        call.enqueue(new Callback<TaskPOJO>() {
+            @Override
+            public void onResponse(Call<TaskPOJO> call, Response<TaskPOJO> response) {
+                if (!response.isSuccessful()) {
+                    Log.i("responsecode", "i failed");
+                    return;
+                }
+                TaskPOJO postResponse = response.body();
+                //onNewTaskListener.onNewTask(postResponse);
+
+                //String content = "";
+                //content += postResponse.getImage();
+                //byte[] decodedBytes = Base64.decode(content, Base64.DEFAULT);
+                //ImageGenerationActivity.viewImage(decodedBytes);
+            }
+            @Override
+            public void onFailure(Call<TaskPOJO> call, Throwable t) {
+                Log.i("Failure", "failed to reach api");
+            }
+        });
+        return call;
+    }
     public Call<User> createUser(User user){
         Retrofit retrofit = new Retrofit.Builder()
                 //.baseUrl("https://familiar-faces-service.azurewebsites.net/")

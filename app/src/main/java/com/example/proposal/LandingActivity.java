@@ -69,7 +69,7 @@ public class LandingActivity extends AppCompatActivity implements AdapterView.On
             greetings= "Good Evening!";
         }
         String username = MainActivity.currentUser.getNickname() != null && !MainActivity.currentUser.getNickname().isEmpty()? MainActivity.currentUser.getNickname():MainActivity.currentUser.getFirstname();
-        String welcomeMsg =greetings + " " +username + "!\nHappy to see you here.\nWhat would you like to do next? Say 'photo' to look at today's new photos or 'puzzle' to play a new puzzle.";
+        String welcomeMsg =greetings + " " +username + "!\nHappy to see you here!\nWhat would you like to do next? Checking out today's photo, playing a puzzle or viewing an album?";
         textView.setText(welcomeMsg);
         etText.setText("");
 
@@ -127,13 +127,24 @@ public class LandingActivity extends AppCompatActivity implements AdapterView.On
             etText.setText("");
             intent = new Intent(this, ImageGenerationActivity.class);
             startActivity(intent);
-        }else if(command.contains("puzzle")){
+        }else if(command.contains("album")){
+            etText.setText("");
+            //intent = new Intent(this, ImageGenerationActivity.class);
+            intent = new Intent(this,AlbumActivity.class);
+            intent.putExtra(intent.EXTRA_ALLOW_MULTIPLE, true);
+            startActivity(intent);
+        }
+        else if(command.contains("puzzle")){
             etText.setText("");
             intent = new Intent(this, PuzzleActivity.class);
             startActivity(intent);
         }else if(command.contains("family member")){
             etText.setText("");
             intent = new Intent(this, AddUser.class);
+            startActivity(intent);
+        }else if(command.contains("upload")){
+            etText.setText("");
+            intent = new Intent(this, UploadActivity.class);
             startActivity(intent);
         }
     }

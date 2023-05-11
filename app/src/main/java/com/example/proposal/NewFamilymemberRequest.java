@@ -25,7 +25,7 @@ public class NewFamilymemberRequest implements NewFamilymemberApi{
 
     public Call<FamilymemberPOJO> newFamilyMember(FamilymemberPOJO familymember, long userid){
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.4.214:8080/")
+                .baseUrl("http://192.168.4.214:8082/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         newFamilymemberApi = retrofit.create(NewFamilymemberApi.class);
