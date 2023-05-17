@@ -20,6 +20,8 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
@@ -39,6 +41,8 @@ public class LandingActivity extends AppCompatActivity implements AdapterView.On
 
     private boolean firstTime = true;
 
+    private Instant startActivityTime;
+
     // Languages included
     String[] languages = {"English","Tamil","Hindi","Spanish","French",
             "Arabic","Chinese","Japanese","German"};
@@ -46,9 +50,24 @@ public class LandingActivity extends AppCompatActivity implements AdapterView.On
     // Language codes
     String[] lCodes = {"en-US","ta-IN","hi-IN","es-CL","fr-FR",
             "ar-SA","zh-TW","jp-JP","de-DE"};
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        startActivityTime=Instant.now();
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(MainActivity.recordToday != null) {
+            Instant now = Instant.now();
+            Duration appTimeElapsed = Duration.between(startActivityTime, now);
+            MainActivity.recordToday.setApptime(MainActivity.recordToday.getApptime() + appTimeElapsed.toMinutes());
+            RecordUtil.modifyRecord(MainActivity.recordToday);
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        startActivityTime = Instant.now();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing);
 

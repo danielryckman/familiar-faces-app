@@ -25,6 +25,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
 
 import java.time.DayOfWeek;
+import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
@@ -70,6 +72,24 @@ public class PuzzleActivity extends AppCompatActivity implements OnNewTestListen
     String[] lCodes = {"en-US","ta-IN","hi-IN","es-CL","fr-FR",
             "ar-SA","zh-TW","jp-JP","de-DE"};
 
+    private Instant startActivityTime;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        startActivityTime= Instant.now();
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(MainActivity.recordToday != null) {
+            Instant now = Instant.now();
+            Duration appTimeElapsed = Duration.between(startActivityTime, now);
+            MainActivity.recordToday.setApptime(MainActivity.recordToday.getApptime() + appTimeElapsed.getSeconds());
+            MainActivity.recordToday.setTesttime(MainActivity.recordToday.getTesttime() + appTimeElapsed.getSeconds());
+            RecordUtil.modifyRecord(MainActivity.recordToday);
+        }
+    }
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -159,6 +179,10 @@ public class PuzzleActivity extends AppCompatActivity implements OnNewTestListen
                 return;
             }
             etText.setText("");
+            MainActivity.recordToday.setTestnumber(MainActivity.recordToday.getTestnumber() + 1);
+            long averageScore = (testPOJO.getScore() + MainActivity.recordToday.getAveragescore() * (MainActivity.recordToday.getTestnumber()-1))/MainActivity.recordToday.getTestnumber();
+            MainActivity.recordToday.setAveragescore(averageScore);
+            RecordUtil.modifyRecord(MainActivity.recordToday);
             textView.setText("Thanks for playing the puzzle. What do you want to do next? \"go back\" or see \"photo\"?");
             return;
         }

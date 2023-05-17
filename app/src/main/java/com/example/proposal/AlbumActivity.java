@@ -21,6 +21,8 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -61,6 +63,8 @@ public class AlbumActivity extends AppCompatActivity {
 
     private UploadImage uploadImage;
 
+    private Instant startActivityTime;
+
     //private GetImage getimage;
 
     // To show the selected language, we need this
@@ -69,7 +73,19 @@ public class AlbumActivity extends AppCompatActivity {
     //String[] strImages;
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        if(MainActivity.recordToday != null) {
+            Instant now = Instant.now();
+            Duration appTimeElapsed = Duration.between(startActivityTime, now);
+            MainActivity.recordToday.setApptime(MainActivity.recordToday.getApptime() + appTimeElapsed.getSeconds());
+            MainActivity.recordToday.setPhototime(MainActivity.recordToday.getPhototime() + appTimeElapsed.getSeconds());
+            RecordUtil.modifyRecord(MainActivity.recordToday);
+        }
+    }
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
+        startActivityTime = Instant.now();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_album);
 

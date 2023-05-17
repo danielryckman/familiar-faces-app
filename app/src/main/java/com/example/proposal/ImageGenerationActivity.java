@@ -22,6 +22,8 @@ import android.view.MotionEvent;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,8 +66,28 @@ public class ImageGenerationActivity extends AppCompatActivity implements GetIma
     int selectedPhotoId;
 
     boolean firstLaunch = true;
+
+    private Instant startActivityTime;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        startActivityTime=Instant.now();
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(MainActivity.recordToday != null) {
+            Instant now = Instant.now();
+            Duration appTimeElapsed = Duration.between(startActivityTime, now);
+            MainActivity.recordToday.setApptime(MainActivity.recordToday.getApptime() + appTimeElapsed.toMinutes());
+            MainActivity.recordToday.setPhototime(MainActivity.recordToday.getPhototime() + appTimeElapsed.toMinutes());
+            RecordUtil.modifyRecord(MainActivity.recordToday);
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        startActivityTime=Instant.now();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_generation);
         descriptionText = findViewById(R.id.descriptionText);
@@ -144,6 +166,7 @@ public class ImageGenerationActivity extends AppCompatActivity implements GetIma
         }else {
             PhotoPOJO selectedPhoto = photoList[selectedPhotoId];
             selectedPhoto.setComment(String.valueOf(etText.getText()));
+            MainActivity.recordToday.setCommentnumber(MainActivity.recordToday.getCommentnumber() + 1);
             modifyImage(selectedPhoto);
         }
         etText.setText("");

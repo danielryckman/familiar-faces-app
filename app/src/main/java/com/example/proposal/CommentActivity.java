@@ -20,6 +20,8 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 
 public class CommentActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
@@ -37,8 +39,22 @@ public class CommentActivity extends AppCompatActivity implements AdapterView.On
     String[] lCodes = {"en-US","ta-IN","hi-IN","es-CL","fr-FR",
             "ar-SA","zh-TW","jp-JP","de-DE"};
 
+    private Instant startActivityTime;
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(MainActivity.recordToday != null) {
+            Instant now = Instant.now();
+            Duration appTimeElapsed = Duration.between(startActivityTime, now);
+            MainActivity.recordToday.setApptime(MainActivity.recordToday.getApptime() + appTimeElapsed.getSeconds());
+            MainActivity.recordToday.setPhototime(MainActivity.recordToday.getPhototime() + appTimeElapsed.getSeconds());
+            RecordUtil.modifyRecord(MainActivity.recordToday);
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        startActivityTime = Instant.now();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comment);
 
@@ -93,6 +109,7 @@ public class CommentActivity extends AppCompatActivity implements AdapterView.On
                         // get data and append it to editText
                         ArrayList<String> d=result.getData().getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                         etText.setText(etText.getText()+" "+d.get(0));
+                        MainActivity.recordToday.setCommentnumber(MainActivity.recordToday.getCommentnumber() +1);
                     }
                 }
             });

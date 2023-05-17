@@ -167,9 +167,9 @@ public class RecordActivity extends AppCompatActivity implements OnGetRecordsLis
             RecordPOJO record = records.get(i);
             //Date recordDate = new Date(records.get(i).getRdate());
             Date recordDate = dateList.get(i);
-            appTimeDataPoints[i] = new DataPoint(recordDate, record.getApptime());
-            photoTimeDataPoints[i] = new DataPoint(recordDate, record.getPhototime());
-            testTimeDataPoints[i] = new DataPoint(recordDate, record.getTesttime());
+            appTimeDataPoints[i] = new DataPoint(recordDate, record.getApptime()/60);
+            photoTimeDataPoints[i] = new DataPoint(recordDate, record.getPhototime()/60);
+            testTimeDataPoints[i] = new DataPoint(recordDate, record.getTesttime()/60);
             testNumberDataPoints[i] = new DataPoint(recordDate, record.getTestnumber());
             commentNumberDataPoints[i] = new DataPoint(recordDate, record.getCommentnumber());
             testScoreDataPoints[i] = new DataPoint(recordDate, record.getAveragescore());

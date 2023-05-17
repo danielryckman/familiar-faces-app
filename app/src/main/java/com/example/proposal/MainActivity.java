@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -50,10 +51,17 @@ public class MainActivity extends AppCompatActivity implements OnGetUserListener
     EditText password;
 
     TextView message;
-
+    int authCheckUser = 0;
+    int authCheckFamily = 0;
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onResume() {
+        super.onResume();
+        message.setText("");
+        startAppTime=Instant.now();
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
         if(recordToday != null) {
             Instant now = Instant.now();
             Duration appTimeElapsed = Duration.between(startAppTime, now);
@@ -61,6 +69,16 @@ public class MainActivity extends AppCompatActivity implements OnGetUserListener
             modifyRecord(recordToday);
         }
     }
+    //@Override
+   /* protected void onStop() {
+        super.onStop();
+        if(recordToday != null) {
+            Instant now = Instant.now();
+            Duration appTimeElapsed = Duration.between(startAppTime, now);
+            recordToday.setApptime(recordToday.getApptime() + appTimeElapsed.getSeconds());
+            modifyRecord(recordToday);
+        }
+    }*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +93,7 @@ public class MainActivity extends AppCompatActivity implements OnGetUserListener
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                message.setText("");
                 login();
             }
         });
@@ -112,14 +131,17 @@ public class MainActivity extends AppCompatActivity implements OnGetUserListener
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if(currentFamilyMember==null && currentUser==null){
-            message.setText("Invalid username or password. Please try again.");
-        }
+        //if(authCheckUser && authCheckFamily && (currentFamilyMember==null && currentUser==null)){
+       //     message.setText("Invalid username or password. Please try again.");
+        //    authCheckUser = false;
+       //     authCheckFamily =false;
+       // }
     }
 
     @Override
     public void onGetUser(UserPOJO user) {
         if(user != null && user.getPassword().equals(String.valueOf(password.getText()))){
+            authCheckUser=1;
             Intent intent = new Intent(this, LandingActivity.class);
             username.getText().clear();
             password.getText().clear();
@@ -128,18 +150,29 @@ public class MainActivity extends AppCompatActivity implements OnGetUserListener
             getRecord(user.getId());
             startAppTime = Instant.now();
             startActivity(intent);
+        }else{
+            authCheckUser = -1;
+            if(authCheckFamily <0) {
+                message.setText("Invalid username or password. Please try again.");
+            }
         }
     }
 
     @Override
     public void onGetFamilymember(FamilymemberPOJO familymember) {
         if(familymember != null && familymember.getPassword().equals(String.valueOf(password.getText()))){
+            authCheckFamily =1;
             Intent intent = new Intent(this, FamilyActivity.class);
             username.getText().clear();
             password.getText().clear();
             currentUser = null;
             currentFamilyMember = familymember;
             startActivity(intent);
+        }else{
+            authCheckFamily =-1;
+            if(authCheckUser <0) {
+                message.setText("Invalid username or password. Please try again.");
+            }
         }
     }
 
