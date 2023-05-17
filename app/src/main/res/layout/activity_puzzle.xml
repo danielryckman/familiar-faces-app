@@ -58,7 +58,7 @@
         android:layout_width="350dp"
         android:layout_height="150dp"
         android:layout_marginTop="100dp"
-        android:text="test"
+        android:text=""
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
