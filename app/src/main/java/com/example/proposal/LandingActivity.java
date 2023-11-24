@@ -81,14 +81,14 @@ public class LandingActivity extends AppCompatActivity implements AdapterView.On
         int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
 
         if(timeOfDay >= 0 && timeOfDay < 12){
-            greetings= "Good Morning!";
+            greetings= "Good Morning,";
         }else if(timeOfDay >= 12 && timeOfDay < 16){
-            greetings = "Good Afternoon!";
+            greetings = "Good Afternoon,";
         }else{
-            greetings= "Good Evening!";
+            greetings= "Good Evening,";
         }
         String username = MainActivity.currentUser.getNickname() != null && !MainActivity.currentUser.getNickname().isEmpty()? MainActivity.currentUser.getNickname():MainActivity.currentUser.getFirstname();
-        String welcomeMsg =greetings + " " +username + "!\nHappy to see you here!\nWhat would you like to do next? Checking out today's photo, playing a puzzle or viewing an album?";
+        String welcomeMsg =greetings + " " +username + "!\nWhat would you like to do next? Check out today's photos, play a puzzle or view an album?";
         textView.setText(welcomeMsg);
         etText.setText("");
 

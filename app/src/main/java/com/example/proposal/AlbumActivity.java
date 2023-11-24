@@ -1,7 +1,11 @@
 package com.example.proposal;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.AssetFileDescriptor;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.util.Log;
@@ -10,8 +14,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Gallery;
 import android.widget.ImageView;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +23,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -61,10 +64,16 @@ public class AlbumActivity extends AppCompatActivity {
 
     int selectedImageId;
 
+    int current_index =0;
+
     private UploadImage uploadImage;
 
     private Instant startActivityTime;
 
+
+    private MediaPlayer player;
+
+    private int[] songs;
     //private GetImage getimage;
 
     // To show the selected language, we need this
@@ -81,6 +90,21 @@ public class AlbumActivity extends AppCompatActivity {
             MainActivity.recordToday.setApptime(MainActivity.recordToday.getApptime() + appTimeElapsed.getSeconds());
             MainActivity.recordToday.setPhototime(MainActivity.recordToday.getPhototime() + appTimeElapsed.getSeconds());
             RecordUtil.modifyRecord(MainActivity.recordToday);
+        }
+
+        stopPlayer();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        stopPlayer();
+    }
+
+    private void stopPlayer(){
+        if(player != null){
+            player.release();
+            player=null;
         }
     }
     @Override
@@ -101,12 +125,26 @@ public class AlbumActivity extends AppCompatActivity {
         annotationText = (TextView) findViewById(R.id.annotationText);
         descriptionText = (TextView) findViewById(R.id.descriptionText);
         albumTitle = (TextView) findViewById(R.id.albumTextView);
-        deleteButton =(Button) findViewById(R.id.deleteButton);
+        deleteButton = (Button) findViewById(R.id.deleteButton);
         etText = findViewById(R.id.albumetSpeech);
         ivMic = findViewById(R.id.albumivSpeak);
 
         getImage(MainActivity.currentUser.getId());
 
+        songs= new int[] {R.raw.sound0,R.raw.sound1,R.raw.sound2,R.raw.song3};
+
+
+        if (player == null) {
+            player = MediaPlayer.create(this, songs[0]);
+            player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mediaPlayer) {
+                    play();
+                }
+            });
+        }
+
+        player.start();
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -119,10 +157,10 @@ public class AlbumActivity extends AppCompatActivity {
                     @Override
                     public void onActivityResult(ActivityResult result) {
                         // if result is not empty
-                        if (result.getResultCode() == Activity.RESULT_OK && result.getData()!=null) {
+                        if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
                             // get data and append it to editText
-                            ArrayList<String> d=result.getData().getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                            etText.setText(etText.getText()+" "+d.get(0));
+                            ArrayList<String> d = result.getData().getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                            etText.setText(etText.getText() + " " + d.get(0));
                             textChanged();
                         }
                     }
@@ -133,14 +171,36 @@ public class AlbumActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // creating intent using RecognizerIntent to convert speech to text
                 Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-                intent.putExtra(RecognizerIntent.EXTRA_PROMPT,"Speak now!");
+                intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+                intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak now!");
                 // starting intent for result
                 activityResultLauncher.launch(intent);
             }
         });
+    }
+    private void play()
+    {
+        current_index = (current_index +1)% 4;
+        AssetFileDescriptor afd = this.getResources().openRawResourceFd(songs[current_index]);
 
-
+        try
+        {
+            player.reset();
+            player.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getDeclaredLength());
+            player.prepare();
+            player.start();
+            afd.close();
+        }
+        catch (IllegalArgumentException e)
+        {
+            Log.e(TAG, "Unable to play audio queue do to exception: " + e.getMessage(), e);
+        }
+        catch (IllegalStateException e){
+            Log.e(TAG, "Unable to play audio queue do to exception: " + e.getMessage(), e);
+        }
+        catch (IOException e){
+            Log.e(TAG, "Unable to play audio queue do to exception: " + e.getMessage(), e);
+        }
     }
 
     public void textChanged(){

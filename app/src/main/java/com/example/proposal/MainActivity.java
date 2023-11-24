@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements OnGetUserListener
 
     public static FamilymemberPOJO currentFamilyMember;
 
-    //public static String wsUrl = "https://familiar-faces-service.azurewebsites.net/";
+    //public static String WS_URL = "https://familiar-faces-service.azurewebsites.net/";
 
     public static String WS_URL = "http://192.168.4.214:8082/";
 
