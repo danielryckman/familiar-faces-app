@@ -184,6 +184,6 @@ public class PhotoPOJO {
         this.image = image;
     }
 
-    public String getImage() { return image; }
+    public String getImage(long begin, long end, long userid) { return image; }
 
 }

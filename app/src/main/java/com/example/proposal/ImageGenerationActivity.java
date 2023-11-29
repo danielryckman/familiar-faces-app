@@ -97,7 +97,7 @@ public class ImageGenerationActivity extends AppCompatActivity implements GetIma
         ivMic = findViewById(R.id.ivSpeak);
         Log.i("view", "finished");
         etText.setText("Press the microphone image to leave a comment.");
-        getImage();
+        getImage(0, 999999999,MainActivity.userid);
         ivMic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -171,13 +171,13 @@ public class ImageGenerationActivity extends AppCompatActivity implements GetIma
         }
         etText.setText("");
     }
-    public Call<PhotoPOJO[]> getImage() {
+    public Call<PhotoPOJO[]> getImage(long begin, long end, long userid) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(MainActivity.WS_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         getimage = retrofit.create(GetImage.class);
-        Call<PhotoPOJO[]> call = getimage.getImage();
+        Call<PhotoPOJO[]> call = getimage.getImage(begin, end, userid);
         call.enqueue(new Callback<PhotoPOJO[]>() {
             @Override
             public void onResponse(Call<PhotoPOJO[]> call, Response<PhotoPOJO[]> response) {
@@ -250,7 +250,7 @@ public class ImageGenerationActivity extends AppCompatActivity implements GetIma
         Log.i("numimage", c);
         for (int count = 0; count < imageCount; count++) {
             ImageView imageView = new ImageView(this);
-            String image = array[count].getImage();
+            String image = array[count].getImage(0, 999999999, MainActivity.userid);
             byte[] decodedBytes = android.util.Base64.decode(image, Base64.DEFAULT);
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inMutable = true;
@@ -341,7 +341,7 @@ public class ImageGenerationActivity extends AppCompatActivity implements GetIma
 
     @Override
     public void onNewTask(TaskPOJO task) {
-        getImage();
+        getImage(0, 999999999, MainActivity.userid);
     }
 }
 

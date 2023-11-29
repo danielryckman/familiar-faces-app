@@ -52,7 +52,7 @@ public class CustomizedGalleryAdapter extends BaseAdapter {
 
         // set image in ImageView
         //imageView.setImageResource(images[position]);
-        imageView.setImageBitmap(getBitmapFromString(images[position].getImage()));
+        imageView.setImageBitmap(getBitmapFromString(images[position].getImage(0, 999999999,MainActivity.userid)));
 
         // set ImageView param
         imageView.setLayoutParams(new Gallery.LayoutParams(200, 200));

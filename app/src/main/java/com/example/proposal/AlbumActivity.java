@@ -220,7 +220,7 @@ public class AlbumActivity extends AppCompatActivity {
                 selectedImageId = selectedImageId +1;
             }
             selectedImage = images[selectedImageId];
-            selectedImageView.setImageBitmap(CustomizedGalleryAdapter.getBitmapFromString(images[selectedImageId].getImage()));
+            selectedImageView.setImageBitmap(CustomizedGalleryAdapter.getBitmapFromString(images[selectedImageId].getImage(0, 999999999,MainActivity.userid)));
             annotationText.setText(images[selectedImageId].getPersoninpic());
             descriptionText.setText(images[selectedImageId].getDescription());
         }
@@ -246,7 +246,7 @@ public class AlbumActivity extends AppCompatActivity {
                 customGalleryAdapter = new CustomizedGalleryAdapter(getApplicationContext(), images);
 
                 if(images.length >0) {
-                    selectedImageView.setImageBitmap(CustomizedGalleryAdapter.getBitmapFromString(images[0].getImage()));
+                    selectedImageView.setImageBitmap(CustomizedGalleryAdapter.getBitmapFromString(images[0].getImage(0, 999999999,MainActivity.userid)));
                     annotationText.setText(images[0].getPersoninpic());
                     descriptionText.setText(images[0].getDescription());
                     selectedImageId =0;
@@ -261,7 +261,7 @@ public class AlbumActivity extends AppCompatActivity {
                     // position will indicate the location of image
                     selectedImage = images[position];
                     selectedImageId = position;
-                    selectedImageView.setImageBitmap(CustomizedGalleryAdapter.getBitmapFromString(images[position].getImage()));
+                    selectedImageView.setImageBitmap(CustomizedGalleryAdapter.getBitmapFromString(images[position].getImage(0, 999999999,MainActivity.userid)));
                     annotationText.setText(images[position].getPersoninpic());
                     descriptionText.setText(images[position].getDescription());
                 });
@@ -300,7 +300,7 @@ public class AlbumActivity extends AppCompatActivity {
                     }
                     customGalleryAdapter = new CustomizedGalleryAdapter(getApplicationContext(), images);
 
-                    selectedImageView.setImageBitmap(CustomizedGalleryAdapter.getBitmapFromString(images[0].getImage()));
+                    selectedImageView.setImageBitmap(CustomizedGalleryAdapter.getBitmapFromString(images[0].getImage(0, 999999999,MainActivity.userid)));
                     annotationText.setText(images[0].getPersoninpic());
                     descriptionText.setText(images[0].getDescription());
 
@@ -312,7 +312,7 @@ public class AlbumActivity extends AppCompatActivity {
                         // Whichever image is clicked, that is set in the  selectedImageView
                         // position will indicate the location of image
                         selectedImage = images[position];
-                        selectedImageView.setImageBitmap(CustomizedGalleryAdapter.getBitmapFromString(images[position].getImage()));
+                        selectedImageView.setImageBitmap(CustomizedGalleryAdapter.getBitmapFromString(images[position].getImage(0, 999999999,MainActivity.userid)));
                         annotationText.setText(images[position].getPersoninpic());
                         descriptionText.setText(images[position].getDescription());
                     });

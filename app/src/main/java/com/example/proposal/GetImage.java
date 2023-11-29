@@ -12,8 +12,8 @@ import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 public interface GetImage {
-    @GET("api/todo/photos")
-    Call<PhotoPOJO[]> getImage();
+    @GET("api/todo/photorange")
+    Call<PhotoPOJO[]> getImage(@Query("begin") long begin, @Query("end") long end, @Query("userid") long userid);
 
     @PUT("api/todo/photo")
     Call<ResponseBody> updateImage(@Body PhotoPOJO photo);

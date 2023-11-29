@@ -43,6 +43,8 @@ public class MainActivity extends AppCompatActivity implements OnGetUserListener
 
     public static RecordPOJO recordToday;
 
+    public static long userid;
+
     private Instant startAppTime;
     Button submit;
 
@@ -146,6 +148,7 @@ public class MainActivity extends AppCompatActivity implements OnGetUserListener
             username.getText().clear();
             password.getText().clear();
             currentUser = user;
+            userid = currentUser.getId();
             currentFamilyMember= null;
             getRecord(user.getId());
             startAppTime = Instant.now();
@@ -239,6 +242,8 @@ public class MainActivity extends AppCompatActivity implements OnGetUserListener
         });
         return call;
     }
+
+    //4.109:7860
 
     public void modifyRecord(RecordPOJO record) {
         Retrofit retrofit = new Retrofit.Builder()

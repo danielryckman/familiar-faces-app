@@ -14,6 +14,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -27,6 +28,8 @@ import com.google.gson.Gson;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -38,19 +41,22 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class UploadActivity extends AppCompatActivity {
+public class UploadActivity extends AppCompatActivity implements GetAlbum{
 
     TextView selectImage;
     private static final int PICK_IMAGE_REQUEST = 9544;
     ImageView image;
     Uri selectedImage;
     String part_image;
+    TextView createAlbum;
 
     EditText title;
-
+    EditText editAlbumName;
     EditText personInPic;
 
+    private GetAlbum gAlbum;
     EditText description;
+    List<String> albumItems = new ArrayList<String>();
 
     Spinner albums;
 
@@ -67,15 +73,14 @@ public class UploadActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.photo_upload);
         selectImage = findViewById(R.id.select_img);
+        createAlbum = findViewById(R.id.newAlbum);
         image = findViewById(R.id.img);
         title = findViewById(R.id.title);
         personInPic = findViewById(R.id.personinpic);
         description = findViewById(R.id.description);
         albums = findViewById(R.id.album);
-
-        String[] albumItems = new String[]{"test", "create a new album"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, albumItems);
-        albums.setAdapter(adapter);
+        editAlbumName = findViewById(R.id.editAlbumName);
+        getAlbum(1);
     }
 
     // Method for starting the activity for selecting image from phone storage
@@ -84,6 +89,12 @@ public class UploadActivity extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
         startActivityForResult(Intent.createChooser(intent, "Open Gallery"), PICK_IMAGE_REQUEST);
+    }
+    public void newAlbumClick(View view) {
+        String albumName = String.valueOf(editAlbumName.getText());
+        if (!albumName.isEmpty()){
+            newAlbum(MainActivity.userid, albumName);
+        }
     }
 
     // Method to get the absolute path of the selected image from its URI
@@ -152,7 +163,7 @@ public class UploadActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         uploadimage = retrofit.create(UploadImage.class);
-        Call<ResponseBody> upload = uploadimage.uploadImage(imagePart,photoPart,MainActivity.currentUser.getId(), "test");
+        Call<ResponseBody> upload = uploadimage.uploadImage(imagePart,photoPart,MainActivity.currentUser.getId(), (String) albums.getSelectedItem());
         upload.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -169,6 +180,61 @@ public class UploadActivity extends AppCompatActivity {
                 Toast.makeText(UploadActivity.this, "Request failed", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+//fix stuff here
+    @Override
+    public Call<List<String>> getAlbum(long id){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(MainActivity.WS_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        gAlbum = retrofit.create(GetAlbum.class);
+        Call<List<String>> call = gAlbum.getAlbum(id);
+        call.enqueue(new Callback<List<String>>() {
+            @Override
+            public void onResponse(Call<List<String>> call, Response<List<String>> response) {
+                if (!response.isSuccessful()) {
+                    Log.i("responsecode", "i failed");
+                    return;
+                }
+                List<String> postResponse = response.body();
+                albumItems = postResponse;
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, albumItems);
+                albums.setAdapter(adapter);
+            }
+            @Override
+            public void onFailure(Call<List<String>> call, Throwable t) {
+                Log.i("Failure", "j failed" + t.getMessage());
+             }
+        });
+        return call;
+    }
+
+    @Override
+    public Call<Void> newAlbum(long userid, String album) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(MainActivity.WS_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        gAlbum = retrofit.create(GetAlbum.class);
+        Call<Void> call = gAlbum.newAlbum(userid, album);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (!response.isSuccessful()) {
+                    Log.i("responsecode", "i failed");
+                    return;
+                }
+                albumItems.add(album);
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, albumItems);
+                albums.setAdapter(adapter);
+            }
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.i("Failure", "j failed" + t.getMessage());
+            }
+        });
+        return call;
     }
 
     public static void verifyStoragePermissions(Activity activity) {
