@@ -1,10 +1,13 @@
 package com.example.proposal;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.StrictMode;
 import android.os.SystemClock;
 import android.util.Log;
@@ -15,6 +18,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -37,7 +50,9 @@ public class MainActivity extends AppCompatActivity implements OnGetUserListener
 
     //public static String WS_URL = "https://familiar-faces-service.azurewebsites.net/";
 
-    public static String WS_URL = "http://192.168.4.214:8082/";
+    public static String WS_URL = "http://192.168.4.109:8082/";
+
+    private static String credFilePath = Environment.getExternalStorageDirectory() + "/" + File.separator + "/familiar/faces/authToken.txt";
 
     private NewRecord newRecord;
 
@@ -92,6 +107,13 @@ public class MainActivity extends AppCompatActivity implements OnGetUserListener
         username = (EditText) findViewById(R.id.username);
         password = (EditText) findViewById(R.id.password);
         message = (TextView) findViewById(R.id.message);
+
+        ActivityCompat.requestPermissions(MainActivity.this,
+                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                1);
+        ActivityCompat.requestPermissions(MainActivity.this,
+                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                1);
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -106,6 +128,12 @@ public class MainActivity extends AppCompatActivity implements OnGetUserListener
                 addUser();
             }
         });
+        //try {
+            //loginWithCredential();
+            login();
+        //}catch(IOException ex){
+        //    message.setText("Failed to save user credentials." + ex.getMessage());
+        //}
     }
 
     public void addUser(){
@@ -133,17 +161,38 @@ public class MainActivity extends AppCompatActivity implements OnGetUserListener
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //if(authCheckUser && authCheckFamily && (currentFamilyMember==null && currentUser==null)){
-       //     message.setText("Invalid username or password. Please try again.");
-        //    authCheckUser = false;
-       //     authCheckFamily =false;
-       // }
+    }
+    private void saveCredential(String cred) throws IOException {
+        ActivityCompat.requestPermissions(MainActivity.this,
+                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                1);
+        ActivityCompat.requestPermissions(MainActivity.this,
+                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                1);
+        OutputStream fo = openFileOutput("ffAuthToken.txt", MODE_PRIVATE);
+        OutputStreamWriter outputWriter=new OutputStreamWriter(fo);
+        outputWriter.write(cred);
+        outputWriter.close();
+        fo.close();
+    }
+
+    private void loginWithCredential() throws IOException {
+        InputStream in = openFileInput("ffAuthToken.txt");
+        InputStreamReader ir = new InputStreamReader(in);
+        BufferedReader br = new BufferedReader(ir);
+        String text = br.readLine();
+        String[] credentials = text.split("/");
+        username.setText(credentials[0]);
+        password.setText(credentials[1]);
+        br.close();
+        ir.close();
     }
 
     @Override
     public void onGetUser(UserPOJO user) {
         if(user != null && user.getPassword().equals(String.valueOf(password.getText()))){
             authCheckUser=1;
+            //Intent intent = new Intent(this, ImageGenerationActivity.class);
             Intent intent = new Intent(this, LandingActivity.class);
             username.getText().clear();
             password.getText().clear();
@@ -152,6 +201,11 @@ public class MainActivity extends AppCompatActivity implements OnGetUserListener
             currentFamilyMember= null;
             getRecord(user.getId());
             startAppTime = Instant.now();
+            try {
+                saveCredential(user.getEmail() + "/" + user.getPassword());
+            }catch(IOException ex){
+                message.setText("Failed to save user credentials." + ex.getMessage());
+            }
             startActivity(intent);
         }else{
             authCheckUser = -1;

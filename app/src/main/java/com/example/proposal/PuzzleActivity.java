@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+import android.speech.tts.TextToSpeech;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -53,10 +54,10 @@ public class PuzzleActivity extends AppCompatActivity implements OnNewTestListen
     private int mid =0 ;
 
     private int retry =0;
-
+    TextToSpeech speak;
     private Context activityContext;
     private List<String> memoryTestSolution = new ArrayList<>();
-    private String relationshipQuestionTemplate="How are a %s and a %s similar? How they are alike. They both are ... what?";
+    private String relationshipQuestionTemplate="How are a %s and a %s similar? How are they alike? They both are ... what?";
 
     private String memoryQuestionTemplate ="Memory Test. Remember these 3 words. Repeat them at the end of the test: \n %s \n Say any word to go to the next question.";
 
@@ -153,7 +154,18 @@ public class PuzzleActivity extends AppCompatActivity implements OnNewTestListen
                     }
                 }
             });
-
+    public void speakwords(CharSequence speakText){
+        speak = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int i) {
+                if (i != TextToSpeech.ERROR) {
+                    speak.setSpeechRate(0.5f);
+                    speak.setLanguage(Locale.US);
+                    speak.speak(speakText, TextToSpeech.QUEUE_FLUSH, null, null);
+                }
+            }
+        });
+    }
     public void textChanged() {
         String command = String.valueOf(etText.getText());
         Intent intent;
@@ -176,6 +188,9 @@ public class PuzzleActivity extends AppCompatActivity implements OnNewTestListen
                 testPOJO.setScore(testPOJO.getScore() + 1);
             }else if(retry <5 ){
                 retry ++;
+                CharSequence t = "Hmm. Not quite right. Try again?";
+                speakwords(t);
+                speakwords(textView.getText());
                 return;
             }
             etText.setText("");
@@ -184,6 +199,7 @@ public class PuzzleActivity extends AppCompatActivity implements OnNewTestListen
             MainActivity.recordToday.setAveragescore(averageScore);
             RecordUtil.modifyRecord(MainActivity.recordToday);
             textView.setText("Thanks for playing the puzzle. What do you want to do next? \"go back\" or see \"photo\"?");
+            speakwords(textView.getText());
             return;
         }
         int result = checkSolution(qid);
@@ -198,7 +214,8 @@ public class PuzzleActivity extends AppCompatActivity implements OnNewTestListen
             }
         }else if(result == -1 && retry < 3 ){
             if(!String.valueOf(textView.getText()).contains("Not quite right.")) {
-                textView.setText(textView.getText() + "\n Hmm. Not quite right. Try again?");
+                CharSequence t = "Hmm. Not quite right. Try again?" + textView.getText();
+                speakwords(t);
             }
             retry ++;
             return;
@@ -250,6 +267,8 @@ public class PuzzleActivity extends AppCompatActivity implements OnNewTestListen
                 return 1;
             }else{
                 setButtonColorRed(mid);
+                CharSequence t = "Hmm. Not quite right. Try again?";
+                speakwords(t);
                 return -1;
             }
         }
@@ -288,7 +307,7 @@ public class PuzzleActivity extends AppCompatActivity implements OnNewTestListen
                 setButtonColorRed(qid);
                 return -1;
             }else{
-                if(String.valueOf(etText.getText()).toLowerCase().contains("2023")){
+                if(String.valueOf(etText.getText()).toLowerCase().contains("2024")){
                     setButtonColorGreen(qid);
                     return 1;
                 }
@@ -341,6 +360,7 @@ public class PuzzleActivity extends AppCompatActivity implements OnNewTestListen
                 }
             }
             textView.setText(description);
+            speakwords(textView.getText());
         }
     }
 

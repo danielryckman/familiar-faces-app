@@ -25,7 +25,7 @@ public class NewFamilymemberRequest implements NewFamilymemberApi{
 
     public Call<FamilymemberPOJO> newFamilyMember(FamilymemberPOJO familymember, long userid){
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.4.214:8082/")
+                .baseUrl(MainActivity.WS_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         newFamilymemberApi = retrofit.create(NewFamilymemberApi.class);
@@ -45,7 +45,7 @@ public class NewFamilymemberRequest implements NewFamilymemberApi{
             @Override
             public void onFailure(Call<FamilymemberPOJO> call, Throwable t) {
                 Log.i("Failure", "failed to create new family member" + t.getMessage());
-                onGetFamilymemberListener.onGetFamilymember(null);
+                //onGetFamilymemberListener.onGetFamilymember(null);
             }
         });
         return call;

@@ -79,7 +79,6 @@ public class UploadActivity extends AppCompatActivity implements GetAlbum{
         personInPic = findViewById(R.id.personinpic);
         description = findViewById(R.id.description);
         albums = findViewById(R.id.album);
-        editAlbumName = findViewById(R.id.editAlbumName);
         getAlbum(1);
     }
 
@@ -89,12 +88,6 @@ public class UploadActivity extends AppCompatActivity implements GetAlbum{
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
         startActivityForResult(Intent.createChooser(intent, "Open Gallery"), PICK_IMAGE_REQUEST);
-    }
-    public void newAlbumClick(View view) {
-        String albumName = String.valueOf(editAlbumName.getText());
-        if (!albumName.isEmpty()){
-            newAlbum(MainActivity.userid, albumName);
-        }
     }
 
     // Method to get the absolute path of the selected image from its URI
@@ -139,7 +132,10 @@ public class UploadActivity extends AppCompatActivity implements GetAlbum{
         }
         return result;
     }
-
+    public void addAlbum(View view){
+        Intent intent = new Intent(this, NewAlbumActivity.class);
+        startActivity(intent);
+    }
     // Upload the image to the remote database
     public void uploadImage(View view) {
         File imageFile = new File(part_image);

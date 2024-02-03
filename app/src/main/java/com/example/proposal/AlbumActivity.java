@@ -131,8 +131,8 @@ public class AlbumActivity extends AppCompatActivity {
 
         getImage(MainActivity.currentUser.getId());
 
-        songs= new int[] {R.raw.sound0,R.raw.sound1,R.raw.sound2,R.raw.song3};
-
+        //songs= new int[] {R.raw.sound0,R.raw.sound1,R.raw.sound2,R.raw.song3};
+        songs= new int[] {R.raw.walktheline, R.raw.jailhouserock, R.raw.rockaroundtheclock};
 
         if (player == null) {
             player = MediaPlayer.create(this, songs[0]);

@@ -70,47 +70,23 @@
         android:background="@android:drawable/btn_dropdown"
         android:spinnerMode="dropdown"
         app:layout_constraintTop_toBottomOf="@+id/textAlbum"
-        app:layout_constraintBottom_toTopOf="@+id/textTitle"
+        app:layout_constraintBottom_toTopOf="@+id/newAlbum"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:textSize="10sp" />
-    <TextView
-        android:id="@+id/textAlbumName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:text="Album:"
-        android:textSize="15sp"
-        app:layout_constraintTop_toBottomOf="@+id/textAlbum"
-        app:layout_constraintBottom_toTopOf="@+id/newAlbum"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/textAlbum"
-        android:textColor="@color/black"/>
-
-    <EditText
-        android:id="@+id/editAlbumName"
-        android:layout_width="143dp"
-        android:layout_height="35dp"
-        android:ems="10"
-        android:inputType="text"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/textTitle"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/newAlbum"
-        app:layout_constraintTop_toBottomOf="@+id/textAlbumName" />
     <Button
         android:id="@+id/newAlbum"
         android:layout_width="wrap_content"
-        android:layout_height="20dp"
+        android:layout_height="30dp"
         android:text="Create New Album"
+        android:textAllCaps="false"
         app:layout_constraintTop_toBottomOf="@+id/album"
         app:layout_constraintBottom_toTopOf="@+id/textTitle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:textColor="@color/element_white"
         android:textSize="10dp"
-        android:onClick="newAlbumClick"
+        android:onClick="addAlbum"
         android:background="@drawable/round_button"
         android:gravity="center"/>
     <TextView

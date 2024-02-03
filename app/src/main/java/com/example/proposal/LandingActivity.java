@@ -97,6 +97,7 @@ public class LandingActivity extends AppCompatActivity implements AdapterView.On
             public void onInit(int i) {
                 if(i != TextToSpeech.ERROR){
                     speak.setLanguage(Locale.US);
+                    speak.setSpeechRate(0.5f);
                     speak.speak(welcomeMsg, TextToSpeech.QUEUE_FLUSH,null, null);
                 }
             }
@@ -148,8 +149,8 @@ public class LandingActivity extends AppCompatActivity implements AdapterView.On
             startActivity(intent);
         }else if(command.contains("album")){
             etText.setText("");
-            //intent = new Intent(this, ImageGenerationActivity.class);
-            intent = new Intent(this,AlbumActivity.class);
+            intent = new Intent(this, AlbumActivity.class);
+            //intent = new Intent(this,AutoAlbumActivity.class);
             intent.putExtra(intent.EXTRA_ALLOW_MULTIPLE, true);
             startActivity(intent);
         }

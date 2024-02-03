@@ -156,12 +156,30 @@ public class RecordActivity extends AppCompatActivity implements OnGetRecordsLis
         Date d5 = calendar.getTime();
         calendar.add(Calendar.DATE, 1);
         Date d6 = calendar.getTime();
+        calendar.add(Calendar.DATE, 1);
+        Date d7 = calendar.getTime();
+        calendar.add(Calendar.DATE, 1);
+        Date d8 = calendar.getTime();
+        calendar.add(Calendar.DATE, 1);
+        Date d9 = calendar.getTime();
+        calendar.add(Calendar.DATE, 1);
+        Date d10 = calendar.getTime();
+        calendar.add(Calendar.DATE, 1);
+        Date d11 = calendar.getTime();
+        calendar.add(Calendar.DATE, 1);
+        Date d12 = calendar.getTime();
         dateList.add(d1);
         dateList.add(d2);
         dateList.add(d3);
         dateList.add(d4);
         dateList.add(d5);
         dateList.add(d6);
+        dateList.add(d7);
+        dateList.add(d8);
+        dateList.add(d9);
+        dateList.add(d10);
+        dateList.add(d11);
+        dateList.add(d12);
 
        for(int i=0; i<records.size(); i++) {
             RecordPOJO record = records.get(i);
