@@ -20,7 +20,14 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="28">
         <activity
-            android:name=".EventEditActivity"
+            android:name=".NewEventEditActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".WeekViewActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -35,13 +42,6 @@
         </activity>
         <activity
             android:name=".CommentActivity"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".WeekViewActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

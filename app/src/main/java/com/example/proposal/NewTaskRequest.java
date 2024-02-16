@@ -35,7 +35,7 @@ public class NewTaskRequest implements NewTaskApi{
                     return;
                 }
                 TaskPOJO postResponse = response.body();
-                //onNewTaskListener.onNewTask(postResponse);
+                onNewTaskListener.onNewTask(postResponse);
 
                 //String content = "";
                 //content += postResponse.getImage();
@@ -49,6 +49,31 @@ public class NewTaskRequest implements NewTaskApi{
         });
         return call;
     }
+
+    @Override
+    public Call<Void> deleteTask(long userid, long taskid) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(MainActivity.WS_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        newTaskApi = retrofit.create(NewTaskApi.class);
+        Call<Void> call = newTaskApi.deleteTask(userid, taskid);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (!response.isSuccessful()) {
+                    Log.i("responsecode", "i failed");
+                    return;
+                }
+            }
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.i("Failure", "failed to reach api");
+            }
+        });
+        return call;
+    }
+
     public Call<User> createUser(User user){
         Retrofit retrofit = new Retrofit.Builder()
                 //.baseUrl("https://familiar-faces-service.azurewebsites.net/")
