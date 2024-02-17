@@ -11,5 +11,5 @@ public interface NewTaskApi {
     Call<TaskPOJO> newTask(@Body TaskPOJO test, @Query("userid") long userid);
 
     @DELETE("api/todo/task")
-    Call<Void> deleteTask(@Query("userid") long userid, @Query("taskid") long taskid);
+    Call<Void> deleteTask(@Query("taskid") long taskid);
 }
