@@ -132,7 +132,7 @@ public class NewEventEditActivity extends AppCompatActivity implements OnNewTask
                 newTaskApi = retrofit.create(NewTaskApi.class);
                 NewTaskRequest newTaskRequest = new NewTaskRequest();
                 newTaskRequest.setOnNewTaskListener(this);
-                newTaskRequest.deleteTask(task.getId());
+                newTaskRequest.deleteTask(lastTask.getId());
             } catch (Exception e) {
                 e.printStackTrace();
             }

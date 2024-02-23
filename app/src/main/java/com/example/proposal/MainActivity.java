@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.os.SystemClock;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -28,6 +29,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -205,6 +207,14 @@ public class MainActivity extends AppCompatActivity implements OnGetUserListener
                 saveCredential(user.getEmail() + "/" + user.getPassword());
             }catch(IOException ex){
                 message.setText("Failed to save user credentials." + ex.getMessage());
+            }
+            String text = user.getEmail() + "/" + user.getPassword();
+            try {
+                byte[] data = text.getBytes("UTF-8");
+                String base64data = Base64.encodeToString(data, Base64.DEFAULT);
+                // send base64 encoded user data to auth service
+            } catch (UnsupportedEncodingException e) {
+                throw new RuntimeException(e);
             }
             startActivity(intent);
         }else{

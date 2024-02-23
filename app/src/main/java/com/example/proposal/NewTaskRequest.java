@@ -99,6 +99,7 @@ public class NewTaskRequest implements NewTaskApi{
         return call;
     }
     /*
+    //Stuff for Azure cloud server
     static String baseUrl = "https://familiar-faces-service.azurewebsites.net/";
     public static void postTask(Event event) throws IOException {
         String name = event.getName();
