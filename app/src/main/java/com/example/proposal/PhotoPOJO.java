@@ -84,10 +84,6 @@ public class PhotoPOJO {
         this.image = image;
     }
 
-    public void setMyuser(UserPOJO myuser) {
-        this.myuser = myuser;
-    }
-
     public void setFamilymember(FamilymemberPOJO familymember) {
         this.familymember = familymember;
     }
@@ -132,10 +128,6 @@ public class PhotoPOJO {
         return comment;
     }
 
-    public UserPOJO getMyuser() {
-        return myuser;
-    }
-
     public FamilymemberPOJO getFamilymember() {
         return familymember;
     }
@@ -162,7 +154,6 @@ public class PhotoPOJO {
 
     private String image;
 
-    private UserPOJO myuser;
 
     private FamilymemberPOJO familymember;
     private String hobbies;

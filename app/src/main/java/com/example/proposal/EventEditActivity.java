@@ -11,6 +11,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.time.LocalTime;
 import java.util.Locale;
 
@@ -60,8 +65,7 @@ public class EventEditActivity extends AppCompatActivity
         timePickerDialog.show();
     }
 
-    public void saveEventAction(View view)
-    {
+    public void saveEventAction(View view) throws FileNotFoundException {
         String eventName = eventNameET.getText().toString();
         String description = descriptionET.getText().toString();
         //String dateTime = CalendarUtils.formatEpochDate(CalendarUtils.selectedDate);
@@ -71,6 +75,15 @@ public class EventEditActivity extends AppCompatActivity
         Event newEvent = new Event(eventName, description, CalendarUtils.selectedDate,hour2+":"+minute2, 1);
         Event.eventsList.add(newEvent);
         TaskPOJO newTask = new TaskPOJO(eventName, description, (long)hour*60+minute*60, 1);
+        InputStream in = openFileInput("key.pub");
+        InputStreamReader ir = new InputStreamReader(in);
+        BufferedReader br = new BufferedReader(ir);
+        String auth_key = "";
+        try {
+            auth_key = br.readLine();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         try {
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(MainActivity.WS_URL)

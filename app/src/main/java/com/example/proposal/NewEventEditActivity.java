@@ -15,6 +15,11 @@ import android.widget.TimePicker;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.time.LocalTime;
 import java.util.Locale;
 
@@ -70,16 +75,26 @@ public class NewEventEditActivity extends AppCompatActivity implements OnNewTask
         timePickerDialog.show();
     }
 
-    public void createEventAction(View view){
+    public void createEventAction(View view) throws IOException {
         String eventName = eventNameET.getText().toString();
         String description = descriptionET.getText().toString();
         //String dateTime = CalendarUtils.formatEpochDate(CalendarUtils.selectedDate);
         //long epochTime = CalendarUtils.epochTime(dateTime);
+        InputStream in = openFileInput("key.pub");
+        InputStreamReader ir = new InputStreamReader(in);
+        BufferedReader br = new BufferedReader(ir);
+        String auth_key = "";
+        try {
+            auth_key = br.readLine();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         hour2 = String.valueOf(hour);
         minute2 = String.valueOf(minute);
-        Event newEvent = new Event(eventName, description, CalendarUtils.selectedDate,hour2+":"+minute2, 1);
+        Event newEvent = new Event(eventName, description, CalendarUtils.selectedDate,hour2+":"+minute2, 1); //FIGURE OUT HOW TO DEAL WITH THIS
         Event.eventsList.add(newEvent);
         TaskPOJO newTask = new TaskPOJO(eventName, description, (long)hour*60+minute*60, 1);
+
         try {
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(MainActivity.WS_URL)

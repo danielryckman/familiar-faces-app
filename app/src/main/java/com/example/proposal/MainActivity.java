@@ -171,8 +171,8 @@ public class MainActivity extends AppCompatActivity implements OnGetUserListener
         ActivityCompat.requestPermissions(MainActivity.this,
                 new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                 1);
-        OutputStream fo = openFileOutput("ffAuthToken.txt", MODE_PRIVATE);
-        OutputStreamWriter outputWriter=new OutputStreamWriter(fo);
+        OutputStream fo = openFileOutput("ffAuthToken.key", MODE_PRIVATE);
+        OutputStreamWriter outputWriter = new OutputStreamWriter(fo);
         outputWriter.write(cred);
         outputWriter.close();
         fo.close();
