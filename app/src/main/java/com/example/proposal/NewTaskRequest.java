@@ -56,13 +56,13 @@ public class NewTaskRequest implements NewTaskApi{
     }
 
     @Override
-    public Call<Void> deleteTask(long taskid) {
+    public Call<Void> deleteTask(long taskid, String auth_token) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(MainActivity.WS_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         newTaskApi = retrofit.create(NewTaskApi.class);
-        Call<Void> call = newTaskApi.deleteTask(taskid);
+        Call<Void> call = newTaskApi.deleteTask(taskid, auth_token);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {

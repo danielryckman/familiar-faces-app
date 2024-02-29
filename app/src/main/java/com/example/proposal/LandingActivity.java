@@ -170,7 +170,7 @@ public class LandingActivity extends AppCompatActivity implements AdapterView.On
             @Override
             public void onResponse(Call<AuthTokenPOJO> call, Response<AuthTokenPOJO> response) {
                 if (!response.isSuccessful()) {
-                    Log.i("responsecode", "i failed");
+                    Log.i("responsecode", "Couldn't get Auth Token");
                     return;
                 }
                 AuthTokenPOJO postResponse = response.body();
@@ -183,7 +183,7 @@ public class LandingActivity extends AppCompatActivity implements AdapterView.On
                         1);
                 OutputStream fo = null;
                 try {
-                    fo = openFileOutput("ffAuthToken.txt", MODE_PRIVATE);
+                    fo = openFileOutput("key.pub", MODE_PRIVATE);
                 } catch (FileNotFoundException e) {
                     throw new RuntimeException(e);
                 }

@@ -39,6 +39,8 @@ public class NewEventEditActivity extends AppCompatActivity implements OnNewTask
     private LocalTime time;
     private TaskPOJO lastTask;
 
+    private String auth_token;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -52,6 +54,26 @@ public class NewEventEditActivity extends AppCompatActivity implements OnNewTask
         imageView = findViewById(R.id.imageView);
         time = LocalTime.now();
         eventDateTV.setText("Date: " + CalendarUtils.formattedDate(CalendarUtils.selectedDate));
+        InputStream in = null;
+        try {
+            in = openFileInput("key.pub");
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        InputStreamReader ir = new InputStreamReader(in);
+        BufferedReader br = new BufferedReader(ir);
+        String text = null;
+        try {
+            text = br.readLine();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        auth_token = text;
+        try {
+            br.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
     private void initWidgets()
     {
@@ -126,7 +148,7 @@ public class NewEventEditActivity extends AppCompatActivity implements OnNewTask
                 newTaskApi = retrofit.create(NewTaskApi.class);
                 NewTaskRequest newTaskRequest = new NewTaskRequest();
                 newTaskRequest.setOnNewTaskListener(this);
-                newTaskRequest.deleteTask(lastTask.getId());
+                newTaskRequest.deleteTask(lastTask.getId(), auth_token);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -147,7 +169,7 @@ public class NewEventEditActivity extends AppCompatActivity implements OnNewTask
                 newTaskApi = retrofit.create(NewTaskApi.class);
                 NewTaskRequest newTaskRequest = new NewTaskRequest();
                 newTaskRequest.setOnNewTaskListener(this);
-                newTaskRequest.deleteTask(lastTask.getId());
+                newTaskRequest.deleteTask(lastTask.getId(), auth_token);
             } catch (Exception e) {
                 e.printStackTrace();
             }

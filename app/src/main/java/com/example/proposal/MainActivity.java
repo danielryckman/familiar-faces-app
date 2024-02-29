@@ -171,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements OnGetUserListener
         ActivityCompat.requestPermissions(MainActivity.this,
                 new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                 1);
-        OutputStream fo = openFileOutput("ffAuthToken.key", MODE_PRIVATE);
+        OutputStream fo = openFileOutput("ffAuthToken.txt", MODE_PRIVATE);
         OutputStreamWriter outputWriter = new OutputStreamWriter(fo);
         outputWriter.write(cred);
         outputWriter.close();
@@ -259,7 +259,7 @@ public class MainActivity extends AppCompatActivity implements OnGetUserListener
             @Override
             public void onResponse(Call<RecordPOJO[]> call, Response<RecordPOJO[]> response) {
                 if (!response.isSuccessful()) {
-                    Log.i("responsecode", "i failed");
+                    Log.i("responsecode", "no getrecord response");
                     return;
                 }
                 RecordPOJO[] recordList = response.body();
@@ -293,7 +293,7 @@ public class MainActivity extends AppCompatActivity implements OnGetUserListener
             @Override
             public void onResponse(Call<RecordPOJO> call, Response<RecordPOJO> response) {
                 if (!response.isSuccessful()) {
-                    Log.i("responsecode", "i failed");
+                    Log.i("responsecode", "nocreate record");
                     return;
                 }
                 RecordPOJO record = response.body();
@@ -321,7 +321,7 @@ public class MainActivity extends AppCompatActivity implements OnGetUserListener
             @Override
             public void onResponse(Call<RecordPOJO> call, Response<RecordPOJO> response) {
                 if (!response.isSuccessful()) {
-                    Log.i("responsecode", "i failed");
+                    Log.i("responsecode", "Failed to modify record");
                     return;
                 }
             }

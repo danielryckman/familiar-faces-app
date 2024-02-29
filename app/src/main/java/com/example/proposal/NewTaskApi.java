@@ -7,9 +7,9 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface NewTaskApi {
-     @POST("api/todo/login")
+     @POST("api/todo/taskuser")
     Call<TaskPOJO> newTask(@Body TaskPOJO test, @Query("userid") long userid);
 
     @DELETE("api/todo/task")
-    Call<Void> deleteTask(@Query("taskid") long taskid);
+    Call<Void> deleteTask(@Query("taskid") long taskid, String auth_token);
 }

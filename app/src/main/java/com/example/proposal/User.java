@@ -21,7 +21,9 @@ public class User {
 
     private String description;
 
-    public User(String firstname, String lastname, String dob, String gender, String nickname, String hobbies, String relationship, String email, String password, String description) {
+    private String auth_token;
+
+    public User(String firstname, String lastname, String dob, String gender, String nickname, String hobbies, String relationship, String email, String password, String description, String auth_token) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.dob = dob;
@@ -32,6 +34,7 @@ public class User {
         this.email = email;
         this.password=password;
         this.description = description;
+        this.auth_token = auth_token;
     }
 
     public String getFirstname() {
@@ -49,4 +52,6 @@ public class User {
     public String getNickname() { return nickname; }
 
     public String getHobbies() { return hobbies; }
+
+    public String getAuth_token() { return auth_token; }
 }

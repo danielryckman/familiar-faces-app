@@ -82,7 +82,7 @@ public class AddUser extends AppCompatActivity {
         r = relationship.getText().toString();
         description = descriptionEdit.getText().toString();
         if(MainActivity.currentUser == null) {
-            User user = new User(fn, ln, birthdate, g, n, h, r, email, password, description);
+            User user = new User(fn, ln, birthdate, g, n, h, r, email, password, description, null);
             try {
                 UserApi userApi = new ServerRequest();
                 userApi.createUser(user);
