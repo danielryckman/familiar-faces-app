@@ -10,10 +10,12 @@ import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Gallery;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,7 +39,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class AlbumActivity extends AppCompatActivity {
+public class AlbumActivity extends AppCompatActivity implements OnGetAlbumListener {
 
     Gallery simpleGallery;
 
@@ -46,7 +48,10 @@ public class AlbumActivity extends AppCompatActivity {
     // and implement the override methods.
     CustomizedGalleryAdapter customGalleryAdapter;
     ImageView selectedImageView;
+    Spinner albums;
+    List<String> albumItems = new ArrayList<String>();
 
+    private GetAlbum gAlbum;
     TextView annotationText;
 
     TextView albumTitle;
@@ -64,12 +69,11 @@ public class AlbumActivity extends AppCompatActivity {
 
     int selectedImageId;
 
-    int current_index =0;
+    int current_index = 0;
 
     private UploadImage uploadImage;
 
     private Instant startActivityTime;
-
 
     private MediaPlayer player;
 
@@ -81,10 +85,15 @@ public class AlbumActivity extends AppCompatActivity {
     // most popular programming languages
     //String[] strImages;
 
+    private OnGetAlbumListener onGetAlbumListener;
+
+    public void setOnGetAlbumListener(OnGetAlbumListener onGetAlbumListener) {
+        this.onGetAlbumListener = onGetAlbumListener;
+    }
     @Override
     protected void onPause() {
         super.onPause();
-        if(MainActivity.recordToday != null) {
+        if (MainActivity.recordToday != null) {
             Instant now = Instant.now();
             Duration appTimeElapsed = Duration.between(startActivityTime, now);
             MainActivity.recordToday.setApptime(MainActivity.recordToday.getApptime() + appTimeElapsed.getSeconds());
@@ -101,12 +110,13 @@ public class AlbumActivity extends AppCompatActivity {
         stopPlayer();
     }
 
-    private void stopPlayer(){
-        if(player != null){
+    private void stopPlayer() {
+        if (player != null) {
             player.release();
-            player=null;
+            player = null;
         }
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         startActivityTime = Instant.now();
@@ -124,15 +134,17 @@ public class AlbumActivity extends AppCompatActivity {
 
         annotationText = (TextView) findViewById(R.id.annotationText);
         descriptionText = (TextView) findViewById(R.id.descriptionText);
-        albumTitle = (TextView) findViewById(R.id.albumTextView);
         deleteButton = (Button) findViewById(R.id.deleteButton);
         etText = findViewById(R.id.albumetSpeech);
         ivMic = findViewById(R.id.albumivSpeak);
-
-        getImage(MainActivity.currentUser.getId());
+        albums = findViewById(R.id.albumspinner);
+        GetAlbumRequest getAlbumRequest = new GetAlbumRequest();
+        getAlbumRequest.setOnGetAlbumListener(this);
+        getAlbumRequest.getAlbum(MainActivity.currentUser.getId());
+        //async issue
 
         //songs= new int[] {R.raw.sound0,R.raw.sound1,R.raw.sound2,R.raw.song3};
-        songs= new int[] {R.raw.walktheline, R.raw.jailhouserock, R.raw.rockaroundtheclock};
+        songs = new int[]{R.raw.walktheline, R.raw.jailhouserock, R.raw.rockaroundtheclock};
 
         if (player == null) {
             player = MediaPlayer.create(this, songs[0]);
@@ -178,62 +190,116 @@ public class AlbumActivity extends AppCompatActivity {
             }
         });
     }
-    private void play()
-    {
-        current_index = (current_index +1)% 4;
+/*
+    @Override
+    public Call<List<String>> getAlbum(long id) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(MainActivity.WS_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        gAlbum = retrofit.create(GetAlbum.class);
+        Call<List<String>> call = gAlbum.getAlbum(id);
+        call.enqueue(new Callback<List<String>>() {
+            @Override
+            public void onResponse(Call<List<String>> call, Response<List<String>> response) {
+                if (!response.isSuccessful()) {
+                    Log.i("responsecode", "i failed");
+                    return;
+                }
+                List<String> postResponse = response.body();
+                albumItems = postResponse;
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, albumItems);
+                albums.setAdapter(adapter);
+                onGetAlbumListener.onAlbumChanged(albumItems);
+            }
+
+            @Override
+            public void onFailure(Call<List<String>> call, Throwable t) {
+                Log.i("Failure", "j failed" + t.getMessage());
+                onGetAlbumListener.onAlbumChanged(null);
+            }
+        });
+        return call;
+    }
+
+    @Override
+    public Call<Void> newAlbum(long userid, String album) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(MainActivity.WS_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        gAlbum = retrofit.create(GetAlbum.class);
+        Call<Void> call = gAlbum.newAlbum(userid, album);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (!response.isSuccessful()) {
+                    Log.i("responsecode", "i failed");
+                    return;
+                }
+                albumItems.add(album);
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, albumItems);
+                albums.setAdapter(adapter);
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.i("Failure", "j failed" + t.getMessage());
+            }
+        });
+        return call;
+    }
+*/
+    private void play() {
+        current_index = (current_index + 1) % 4;
         AssetFileDescriptor afd = this.getResources().openRawResourceFd(songs[current_index]);
 
-        try
-        {
+        try {
             player.reset();
             player.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getDeclaredLength());
             player.prepare();
             player.start();
             afd.close();
-        }
-        catch (IllegalArgumentException e)
-        {
+        } catch (IllegalArgumentException e) {
             Log.e(TAG, "Unable to play audio queue do to exception: " + e.getMessage(), e);
-        }
-        catch (IllegalStateException e){
+        } catch (IllegalStateException e) {
             Log.e(TAG, "Unable to play audio queue do to exception: " + e.getMessage(), e);
-        }
-        catch (IOException e){
+        } catch (IOException e) {
             Log.e(TAG, "Unable to play audio queue do to exception: " + e.getMessage(), e);
         }
     }
 
-    public void textChanged(){
+    public void textChanged() {
         String command = String.valueOf(etText.getText());
-        if(command.trim().isEmpty()){
+        if (command.trim().isEmpty()) {
             return;
         }
         Intent intent;
-        if(command.contains("go back")){
+        if (command.contains("go back")) {
             intent = new Intent(this, LandingActivity.class);
             startActivity(intent);
-        }else if(command.contains("next")){
+        } else if (command.contains("next")) {
             //intent = new Intent(this, ImageGenerationActivity.class);
-            if(selectedImageId > images.length -1){
+            if (selectedImageId > images.length - 1) {
                 selectedImageId = 0;
-            }else{
-                selectedImageId = selectedImageId +1;
+            } else {
+                selectedImageId = selectedImageId + 1;
             }
             selectedImage = images[selectedImageId];
-            selectedImageView.setImageBitmap(CustomizedGalleryAdapter.getBitmapFromString(images[selectedImageId].getImage(0, 999999999,MainActivity.userid)));
+            selectedImageView.setImageBitmap(CustomizedGalleryAdapter.getBitmapFromString(images[selectedImageId].getImage(0, 999999999, MainActivity.userid)));
             annotationText.setText(images[selectedImageId].getPersoninpic());
             descriptionText.setText(images[selectedImageId].getDescription());
         }
         etText.setText("");
     }
 
-    public Call<PhotoPOJO[]> getImage(long userid) {
+    public Call<PhotoPOJO[]> getImage(long userid, String albumName) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(MainActivity.WS_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         uploadImage = retrofit.create(UploadImage.class);
-        Call<PhotoPOJO[]> call = uploadImage.getPhotoFromAlbum(userid, "test");
+        Call<PhotoPOJO[]> call = uploadImage.getPhotoFromAlbum(userid, albumName);
         call.enqueue(new Callback<PhotoPOJO[]>() {
             @Override
             public void onResponse(Call<PhotoPOJO[]> call, Response<PhotoPOJO[]> response) {
@@ -245,11 +311,11 @@ public class AlbumActivity extends AppCompatActivity {
                 // initialize the adapter
                 customGalleryAdapter = new CustomizedGalleryAdapter(getApplicationContext(), images);
 
-                if(images.length >0) {
-                    selectedImageView.setImageBitmap(CustomizedGalleryAdapter.getBitmapFromString(images[0].getImage(0, 999999999,MainActivity.userid)));
+                if (images.length > 0) {
+                    selectedImageView.setImageBitmap(CustomizedGalleryAdapter.getBitmapFromString(images[0].getImage(0, 999999999, MainActivity.userid)));
                     annotationText.setText(images[0].getPersoninpic());
                     descriptionText.setText(images[0].getDescription());
-                    selectedImageId =0;
+                    selectedImageId = 0;
                 }
 
                 // set the adapter for gallery
@@ -261,11 +327,12 @@ public class AlbumActivity extends AppCompatActivity {
                     // position will indicate the location of image
                     selectedImage = images[position];
                     selectedImageId = position;
-                    selectedImageView.setImageBitmap(CustomizedGalleryAdapter.getBitmapFromString(images[position].getImage(0, 999999999,MainActivity.userid)));
+                    selectedImageView.setImageBitmap(CustomizedGalleryAdapter.getBitmapFromString(images[position].getImage(0, 999999999, MainActivity.userid)));
                     annotationText.setText(images[position].getPersoninpic());
                     descriptionText.setText(images[position].getDescription());
                 });
             }
+
             @Override
             public void onFailure(Call<PhotoPOJO[]> call, Throwable t) {
                 Log.i("Failure", "failed to reach api" + t.getMessage());
@@ -275,32 +342,32 @@ public class AlbumActivity extends AppCompatActivity {
     }
 
     public void deletePhotoFromAlbum(View view) {
-        String photoName=selectedImage.getName();
+        String photoName = selectedImage.getName();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(MainActivity.WS_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         uploadImage = retrofit.create(UploadImage.class);
-        Call<ResponseBody> upload = uploadImage.deletePhotoFromAlbum(MainActivity.currentUser.getId(), "test",photoName);
+        Call<ResponseBody> upload = uploadImage.deletePhotoFromAlbum(MainActivity.currentUser.getId(), "test", photoName);
         upload.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if(response.isSuccessful()) {
+                if (response.isSuccessful()) {
                     Toast.makeText(AlbumActivity.this, "Image deleted from album", Toast.LENGTH_SHORT).show();
                     List<PhotoPOJO> imageList = new LinkedList();
 
-                    for(PhotoPOJO item : images) {
+                    for (PhotoPOJO item : images) {
                         if (!item.getName().equals(photoName)) {
                             imageList.add(item);
                         }
                     }
                     images = new PhotoPOJO[imageList.size()];
-                    for(int i=0; i< imageList.size(); i++) {
+                    for (int i = 0; i < imageList.size(); i++) {
                         images[i] = imageList.get(i);
                     }
                     customGalleryAdapter = new CustomizedGalleryAdapter(getApplicationContext(), images);
 
-                    selectedImageView.setImageBitmap(CustomizedGalleryAdapter.getBitmapFromString(images[0].getImage(0, 999999999,MainActivity.userid)));
+                    selectedImageView.setImageBitmap(CustomizedGalleryAdapter.getBitmapFromString(images[0].getImage(0, 999999999, MainActivity.userid)));
                     annotationText.setText(images[0].getPersoninpic());
                     descriptionText.setText(images[0].getDescription());
 
@@ -312,7 +379,7 @@ public class AlbumActivity extends AppCompatActivity {
                         // Whichever image is clicked, that is set in the  selectedImageView
                         // position will indicate the location of image
                         selectedImage = images[position];
-                        selectedImageView.setImageBitmap(CustomizedGalleryAdapter.getBitmapFromString(images[position].getImage(0, 999999999,MainActivity.userid)));
+                        selectedImageView.setImageBitmap(CustomizedGalleryAdapter.getBitmapFromString(images[position].getImage(0, 999999999, MainActivity.userid)));
                         annotationText.setText(images[position].getPersoninpic());
                         descriptionText.setText(images[position].getDescription());
                     });
@@ -324,5 +391,15 @@ public class AlbumActivity extends AppCompatActivity {
                 Toast.makeText(AlbumActivity.this, "Request failed", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public void onAlbumChanged(List<String> albumNames) {
+        if (albumNames != null && !albumNames.isEmpty()) {
+            getImage(MainActivity.currentUser.getId(), albumNames.get(0));
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, albumNames);
+            Log.i("responsecode", albumNames.get(0));
+            albums.setAdapter(adapter);
+        }
     }
 }
