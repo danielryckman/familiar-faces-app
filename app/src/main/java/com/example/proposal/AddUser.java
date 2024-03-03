@@ -10,6 +10,12 @@ import android.widget.RadioGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 public class AddUser extends AppCompatActivity {
     private EditText firstName;
     private EditText lastName;
@@ -71,7 +77,7 @@ public class AddUser extends AppCompatActivity {
             }
         });
     }
-    public void addUser(View view){
+    public void addUser(View view) throws FileNotFoundException {
         fn = firstName.getText().toString();
         ln = lastName.getText().toString();
         email = emailEdit.getText().toString();
@@ -81,11 +87,20 @@ public class AddUser extends AppCompatActivity {
         h = hobbies.getText().toString();
         r = relationship.getText().toString();
         description = descriptionEdit.getText().toString();
+        InputStream in = openFileInput("key.pub");
+        InputStreamReader ir = new InputStreamReader(in);
+        BufferedReader br = new BufferedReader(ir);
+        String auth_key = "";
+        try {
+            auth_key = br.readLine();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         if(MainActivity.currentUser == null) {
             User user = new User(fn, ln, birthdate, g, n, h, r, email, password, description, null);
             try {
                 UserApi userApi = new ServerRequest();
-                userApi.createUser(user);
+                userApi.createUser(auth_key, user);
             } catch (Exception e) {
                 e.printStackTrace();
             }

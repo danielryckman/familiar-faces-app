@@ -148,7 +148,7 @@ public class NewEventEditActivity extends AppCompatActivity implements OnNewTask
                 newTaskApi = retrofit.create(NewTaskApi.class);
                 NewTaskRequest newTaskRequest = new NewTaskRequest();
                 newTaskRequest.setOnNewTaskListener(this);
-                newTaskRequest.deleteTask(lastTask.getId(), auth_token);
+                newTaskRequest.deleteTask(lastTask.getId(), MainActivity.currentFamilyMember.getUserid(), auth_token);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -169,7 +169,7 @@ public class NewEventEditActivity extends AppCompatActivity implements OnNewTask
                 newTaskApi = retrofit.create(NewTaskApi.class);
                 NewTaskRequest newTaskRequest = new NewTaskRequest();
                 newTaskRequest.setOnNewTaskListener(this);
-                newTaskRequest.deleteTask(lastTask.getId(), auth_token);
+                newTaskRequest.deleteTask(lastTask.getId(), MainActivity.currentFamilyMember.getUserid(), auth_token); //MainActivity.currentUser.getId()
             } catch (Exception e) {
                 e.printStackTrace();
             }

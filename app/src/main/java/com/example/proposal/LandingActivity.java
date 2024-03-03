@@ -241,6 +241,11 @@ public class LandingActivity extends AppCompatActivity implements AdapterView.On
             intent = new Intent(this, UploadActivity.class);
             startActivity(intent);
         }
+        else if(command.contains("test")){
+            etText.setText("");
+            intent = new Intent(this, TestingActivity.class);
+            startActivity(intent);
+        }
     }
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {

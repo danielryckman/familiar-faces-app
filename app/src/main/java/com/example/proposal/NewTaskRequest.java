@@ -56,13 +56,13 @@ public class NewTaskRequest implements NewTaskApi{
     }
 
     @Override
-    public Call<Void> deleteTask(long taskid, String auth_token) {
+    public Call<Void> deleteTask(long taskid, long userid, String auth_token) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(MainActivity.WS_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         newTaskApi = retrofit.create(NewTaskApi.class);
-        Call<Void> call = newTaskApi.deleteTask(taskid, auth_token);
+        Call<Void> call = newTaskApi.deleteTask(taskid, MainActivity.currentFamilyMember.getUserid(), auth_token);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -79,14 +79,14 @@ public class NewTaskRequest implements NewTaskApi{
         return call;
     }
 
-    public Call<User> createUser(User user){
+    public Call<User> createUser(String auth_token, User user){
         Retrofit retrofit = new Retrofit.Builder()
                 //.baseUrl("https://familiar-faces-service.azurewebsites.net/")
                 .baseUrl(MainActivity.WS_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         userApi = retrofit.create(UserApi.class);
-        Call<User> call = userApi.createUser(user);
+        Call<User> call = userApi.createUser(auth_token, user);
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {

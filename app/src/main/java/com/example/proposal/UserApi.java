@@ -5,6 +5,7 @@ import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.Header;
 import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
@@ -17,5 +18,5 @@ import retrofit2.http.Url;
 
 public interface UserApi {
     @POST("api/todo/user")
-    Call<User> createUser(@Body User user);
+    Call<User> createUser(@Header("auth_token") String auth_token, @Body User user);
 }

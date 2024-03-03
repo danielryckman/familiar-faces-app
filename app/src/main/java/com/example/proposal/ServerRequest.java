@@ -12,14 +12,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ServerRequest implements UserApi{
     private UserApi userApi;
 
-    public Call<User> createUser(User user){
+    public Call<User> createUser(String auth_token, User user){
         Retrofit retrofit = new Retrofit.Builder()
                 //.baseUrl("https://familiar-faces-service.azurewebsites.net/")
                 .baseUrl(MainActivity.WS_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         userApi = retrofit.create(UserApi.class);
-        Call<User> call = userApi.createUser(user);
+        Call<User> call = userApi.createUser(auth_token, user);
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {

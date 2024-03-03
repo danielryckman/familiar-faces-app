@@ -79,7 +79,7 @@ public class UploadActivity extends AppCompatActivity implements GetAlbum{
         personInPic = findViewById(R.id.personinpic);
         description = findViewById(R.id.description);
         albums = findViewById(R.id.album);
-        getAlbum(1);
+        getAlbum(MainActivity.currentUser.getId());
     }
 
     // Method for starting the activity for selecting image from phone storage
